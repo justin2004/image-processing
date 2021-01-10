@@ -9,12 +9,15 @@
 
 (in-package :im)
 
+(load "src/utils.lisp")
+
 ; what is APL
 
 ; APL
-; rules and meaning
-; syntax and semantics
-; Dyalog, GNU APL, April
+; is rules and meaning
+;    (syntax and semantics)
+; some APLs are
+;   Dyalog, GNU APL, April
 
 
 ; Image Representation
@@ -32,17 +35,17 @@ Terms:
 Scalar - first define outside of APL
 (april "1")
 
-Dimensions, Rank, Shape
-(april "⍴1")
 
 Vector
 (april "2 4 6 8")
 
+Dimensions, Rank, Shape
+(april "⍴1")
 (april "⍴2 4 6 8")
 (april "⍴⍴ 2 4 6 8")
 
 
-Matrix a.k.a "array" 
+Matrix a.k.a "Array" 
 (april-f "4 4 ⍴ 1 2 3" )
 (april  "⍴4 4 ⍴ 1 2 3" )
 (april "⍴⍴4 4 ⍴ 1 2 3" )
@@ -51,7 +54,7 @@ Function
 Operand
 
 Monadic
-(april "- 9")
+(april "÷ 9")
 
 Dyadic
 (april "4 + 6")
@@ -103,8 +106,21 @@ Functions and Operators
 ,
 (april "20 30 40,sam")
 
+
+⎕
+; look
+(april "⎕← 8 7 6" )
+
+⋄
+(april "1 ⋄ 2" )
+(april "⎕←1 ⋄ 2" )
+(april "⎕←1 ⋄ 2 ⋄ 99" )
+
 [ ]
 (april "sam[1]")
+(april "⎕←m ⋄ 0")
+(april "m[1;]")
+
 
 +/
 (april "+/1 3 5 7")
@@ -141,35 +157,17 @@ Functions and Operators
 ;;;;;;;;;;;;;;;
 
 
-(april "⍴ 5 6 7")
-
-
-(let* ((ar (april "300 300 ⍴ (300×300)?255")))
-  (with-open-file (s "/tmp/la.png" :direction :output :if-does-not-exist :create :if-exists :overwrite )
-    (opticl:write-png-file "/tmp/la0.png"
-                             (make-array (array-dimensions ar)
-                                         :element-type '(unsigned-byte 8)
-                                         :initial-contents (april::array-to-list ar)))))
 (jupyter:file "/tmp/la0.png")
 
-(defun write-array-as-png (a &optional (out-path "/tmp/temp0.png"))
-  "a: the array"
-  (opticl:write-png-file out-path
-                         (make-array (array-dimensions a) 
-                                     :element-type '(unsigned-byte 8) 
-                                     :initial-contents (april::array-to-list a))))
 
-(let* ((somejpg (multiple-value-bind (a &rest b)  
-                   (drakma:http-request "https://static.wikia.nocookie.net/homealone/images/4/47/Download-0.jpg/revision/latest/scale-to-width-down/259?cb=20170724041438")        
-                   a)))
-  (alexandria:write-byte-vector-into-file somejpg 
-                               "/tmp/la0.jpg"
-                                          :if-does-not-exist :create
-                               :if-exists :overwrite))
+
+(download-jpg  "https://static.wikia.nocookie.net/homealone/images/4/47/Download-0.jpg/revision/latest/scale-to-width-down/259?cb=20170724041438" "some.jpg")
+(setf *wet-bandits* (opticl:read-jpeg-file "some.jpg"))
 
 (jupyter:file "/tmp/la0.jpg")
 
-(setf *wet-bandits* (opticl:read-jpeg-file "/tmp/la0.jpg"))
+(uiop:run-program "identify /tmp/la0.jpg" :output t)
+(uiop:run-program "file /tmp/la0.jpg" :output t)
 
 ; get the image into april
 (april (with (:state :in ((a *wet-bandits*)))) "img←a")
@@ -182,18 +180,12 @@ Functions and Operators
 (april "m←⌊(+/img)÷¯1↑⍴img")
 
 (april "⍴m")
-; notice we've lost a dimension
+; notice we've lost a dimension (axis?)
 
 (april "m")
 
 (jupyter:file (namestring (write-array-as-png (april:april "⎕←m"))))
 
-(defun run (str)
-  (jupyter:file (namestring 
-                  (write-array-as-png 
-                    (april:april str)))))
-
-(run "⎕←m")
 
 (write-array-as-png (april "⎕←100 100 ⍴ 100?200"))
 
@@ -209,6 +201,36 @@ Functions and Operators
 (april "m←⌊(+/img)÷¯1↑⍴img")
 (april "res←{⍺,≢⍵} ⌸ ,m")
 (april-f "sorted←res[⍋⌽res;]")
+(april-f "sorted←res[⍒res;]")
 (april "values←sorted[⍳1⊃⍴sorted;1]") ; values
 (april "counts←sorted[⍳1⊃⍴sorted;2]") ; counts
 (write-array-as-png (april "(⍴m) ⍴ counts/values"))
+
+
+
+
+; TODO note that the wet bandits, after sobel, seem to have 
+; extra information. jpeg artifacts?
+
+; one shot
+(progn
+  (april "one← ¯1  0  1")
+  (april "two← ¯2  0  2")
+  (april "thr← ¯1  0  1")
+  (april "kernel←3 3 ⍴ one,two,thr")
+  (april-f "kernelsum←1⌈|⌊+/+/kernel") ; the sum's absolute value
+  (april "g←⍉kernel")
+  (april-f "pairs←,(¯1+⍳(¯2+(⍴m)[1]))∘.,¯1+⍳(¯2+(⍴m)[2])")
+  (april "get_submats←{row←⍵[1]⋄col←⍵[2]⋄m[row+⍳3;col+⍳3]}")
+  (april "sub_mats←get_submats¨pairs")
+  (april-f "Gx←(⊂kernel)×sub_mats") ; gradient in x
+  (april-f "Gy←(⊂g)×sub_mats")      ; gradient in y
+  (april-f "filteredx ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gx")
+  (april-f "filteredy ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gy")
+  ; now only keep if above a threshhold
+  ; (april "filtered←filtered×filtered<150")
+
+  ; sobel
+  (april-f "final←((filteredx*2)+filteredy*2)*0.5")
+  (write-array-as-png
+    (april "255⌊0⌈⌈final÷kernelsum")))
