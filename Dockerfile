@@ -1,4 +1,6 @@
 FROM yitzchak/common-lisp-jupyter
 
-WORKDIR /
+ADD src/ /home/app/image-filtering/
+
+WORKDIR /home/app/image-filtering
 
