@@ -9,6 +9,13 @@
 
 (in-package :im)
 
+; what is APL
+
+; APL
+; rules and meaning
+; syntax and semantics
+; Dyalog, GNU APL, April
+
 
 ; Image Representation
 (write-array-as-png (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
@@ -193,3 +200,15 @@ Functions and Operators
 (run "⎕←100 100 ⍴ 100?200")
 ; https://www.keyence.com/ss/products/auto_id/barcode_lecture/basic/mechanism/
 ; homework, make a barcode?
+
+
+;;;;;;;;;;;
+
+
+(april "img")
+(april "m←⌊(+/img)÷¯1↑⍴img")
+(april "res←{⍺,≢⍵} ⌸ ,m")
+(april-f "sorted←res[⍋⌽res;]")
+(april "values←sorted[⍳1⊃⍴sorted;1]") ; values
+(april "counts←sorted[⍳1⊃⍴sorted;2]") ; counts
+(write-array-as-png (april "(⍴m) ⍴ counts/values"))
