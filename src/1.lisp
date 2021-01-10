@@ -10,18 +10,44 @@
 (in-package :im)
 
 
+; Image Representation
+(write-array-as-png (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
+
+
+; most math symbols do what you would expect them to do
+; = + - ÷ × etc.
+
+; Nemonic
+
+
 Terms:
 
 Scalar - first define outside of APL
-Dimensions (rank)
+(april "1")
+
+Dimensions, Rank, Shape
+(april "⍴1")
+
 Vector
-Matrix ("array") 
-Shape
+(april "2 4 6 8")
+
+(april "⍴2 4 6 8")
+(april "⍴⍴ 2 4 6 8")
+
+
+Matrix a.k.a "array" 
+(april-f "4 4 ⍴ 1 2 3" )
+(april  "⍴4 4 ⍴ 1 2 3" )
+(april "⍴⍴4 4 ⍴ 1 2 3" )
 
 Function
-operand
+Operand
+
 Monadic
+(april "- 9")
+
 Dyadic
+(april "4 + 6")
 
 Nested
 Item
@@ -29,8 +55,6 @@ Pixel
 Axis
 
 
-; most math symbols do what you would expect them to do
-; + - ÷ × etc.
 
 Functions and Operators
 ←
@@ -62,7 +86,7 @@ Functions and Operators
 
 ⍉
 ; Transpose
-(april "twenty_five_square←5 5 ⍴ ⍳25")
+(april "⎕←twenty_five_square←5 5 ⍴ ⍳25")
 (april-f "twenty_five_square")
 (april-f "⍉twenty_five_square")
 
