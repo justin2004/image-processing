@@ -89,7 +89,9 @@
 
 ; Pixel
 
-(setf *sia* (opticl:read-png-file "sia.png"))
+(progn
+  (setf *sia* (opticl:read-png-file "sia.png"))
+  0)
 
 (april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[1;]")
 
@@ -105,6 +107,9 @@
 
 ; Vector
 (april "2 4 6 8")
+
+
+; Please Excuse My Dear Aunt Sally
 
 ; Dimensions, Rank, Shape
 
@@ -335,7 +340,7 @@
   (april-f "filteredy ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gy")
   ; now only keep if above a threshhold
   ; (april "filtered←filtered×filtered<150")
-
+  ;
   ; sobel
   (april-f "final←((filteredx*2)+filteredy*2)*0.5")
   (write-array-as-png

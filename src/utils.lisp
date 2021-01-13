@@ -5,10 +5,12 @@
 
 (defun write-array-as-png (a &optional (out-path "/tmp/temp0.png"))
   "a: the array"
-  (opticl:write-png-file out-path
+  (progn
+    (opticl:write-png-file out-path
                          (make-array (array-dimensions a) 
                                      :element-type '(unsigned-byte 8) 
-                                     :initial-contents (april::array-to-list a))))
+                                     :initial-contents (april::array-to-list a)))
+    out-path))
 
 
 
