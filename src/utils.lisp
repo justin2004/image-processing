@@ -3,14 +3,24 @@
 
 ; TODO write a resize image function to make filters fast
 
-(defun write-array-as-png (a &optional (out-path "/tmp/temp0.png"))
+(find-package 'im)
+
+
+; (setf *blah* #'identity)
+(setf *look-at-image* #'jupyter:file)
+
+
+
+
+(defun write-array-as-png (a &optional (out-path "temp0.png"))
   "a: the array"
   (progn
     (opticl:write-png-file out-path
                          (make-array (array-dimensions a) 
                                      :element-type '(unsigned-byte 8) 
                                      :initial-contents (april::array-to-list a)))
-    out-path))
+    (funcall *look-at-image* 
+             out-path)))
 
 
 

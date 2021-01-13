@@ -84,10 +84,10 @@
 ; 0   is black
 ; 255 is white
 
-(download-jpg "http://images6.fanpop.com/image/photos/38400000/Sia-at-SNL-sia-38410276-540-304.jpg"
-              "sia.png")
+; (download-jpg "http://images6.fanpop.com/image/photos/38400000/Sia-at-SNL-sia-38410276-540-304.jpg"
+;               "sia.png")
 
-; Pixel
+; What is a pixel?
 
 (progn
   (setf *sia* (opticl:read-png-file "sia.png"))
