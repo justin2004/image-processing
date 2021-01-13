@@ -63,7 +63,7 @@
 ; I think about the -f as meaning "friendly"
 
 ; Image Representation
-(write-array-as-png (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
+(write-array (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
 
 ; Because images are represented as numbers we need some math to work with them
 
@@ -109,9 +109,18 @@ document.body.appendChild (script);
 ; let's look at the size of it now
 (april "⍴img")
 
+
+; let's look at a single pixel
+(april "img[200;200]")
+; the 200th row
+; the 200th column
+
 ; let's look at one row of pixels
 (april "img[1;]")
 
+
+; let's modify it
+(write-array (april "img × img>150"))
 
 
 
@@ -225,6 +234,9 @@ document.body.appendChild (script);
 (april-f "⍉twenty_five_square")
 
 (write-array (april "⍉m"))
+
+; let's do that to sia
+(write-array (april "⍉img"))
 
 (write-array (april "⍉⍉m"))
 
