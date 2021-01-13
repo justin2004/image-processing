@@ -13,8 +13,8 @@
   (progn
     (april (with (:state 
                    :in 
-                   ((img (opticl:read-png-file path)))))
-           "img←⌊(+/img)÷¯1↑⍴img")
+                   ((img_in (opticl:read-png-file path)))))
+           "img←⌊(+/img_in)÷¯1↑⍴img_in")
     (write-array (april "img") )))
 
 (defun write-array (a)

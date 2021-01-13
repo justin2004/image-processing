@@ -78,14 +78,14 @@
 
 ; TODO now load the symbols
 
-; var script = document.createElement ("script");
-; script.src = "https://abrudz.github.io/lb/lb.js";
-; document.body.appendChild (script);
+var script = document.createElement ("script");
+script.src = "https://abrudz.github.io/lb/lb.js";
+document.body.appendChild (script);
 
 
 ; APL is designed to be mnemonic
 ; 
-; https://www.merriam-webster.com/dictionary/mnemonic
+; : assisting or intended to assist memory 
 
 
 
@@ -99,10 +99,12 @@
 
 ; What is a pixel?
 
+; let's look at some
+; first we need an image
 (read-png "images/sia.png")
 
 ; after you execute (read-png) a greyscale copy, resized if too big, of your image
-; is in april as the "img"
+; is in April as "img"
 
 ; let's look at the size of it now
 (april "⍴img")
@@ -142,7 +144,7 @@
 (april "⍴⍴ 2 4 6 8")
 
 
-; Matrix a.k.a "Array"  a.k.a "grid"
+; Matrix a.k.a "array"  a.k.a "grid"
 
 (april-f "4 4 ⍴ 1 2 3" )
 
@@ -150,9 +152,11 @@
 
 (april "⍴⍴4 4 ⍴ 1 2 3" )
 
-; Function:
-
-; Operands: TODO
+; Function and Operands:
+(april "8 - 3")
+; - is the function
+; 8 is the function's left operand
+; 3 is the function's right operand
 
 ; Monadic Function
 
@@ -179,11 +183,11 @@
 ; ←
 ; assignment
 
-(april "sam←3 4 5")
+(april "sam←50 100 200")
 
 (april "sam")
 
-(april "sam + 2")
+(april "sam ÷ 2")
 
 ; ⍳
 
@@ -208,7 +212,7 @@
 
 (april-f "m")
 
-(write-array-as-png (april "m"))
+(write-array (april "m"))
 
 
 ; ⍉
@@ -220,9 +224,9 @@
 
 (april-f "⍉twenty_five_square")
 
-(write-array-as-png (april "⍉m"))
+(write-array (april "⍉m"))
 
-(write-array-as-png (april "⍉⍉m"))
+(write-array (april "⍉⍉m"))
 
 ; ,
 
@@ -295,39 +299,13 @@
 
 
 
-(progn
-  (download-jpg  "https://static.wikia.nocookie.net/homealone/images/4/47/Download-0.jpg/revision/latest/scale-to-width-down/259?cb=20170724041438" "some.jpg")
-  (look "some.jpg"))
-(progn
-  (setf *wet-bandits* (opticl:read-jpeg-file "some.jpg"))
-  0)
-
 
 ; if you want an information overload run this cell.
 ; it will tell you lots of information about the file "some.jpg"
-(uiop:run-program "identify -verbose some.jpg" :output t)
-
-; get the image into april so you can explore it
-(progn
-  (april (with (:state :in ((a *wet-bandits*)))) "img←a")
-  0)
-
-; now inside april the variable "img" holds our image
+(uiop:run-program "identify -verbose images/sia.png" :output t)
 
 
-; let's look at the shape of the image
-(april "⍴img")
-
-; let's turn it to grayscale
-(april "m←⌊(+/img)÷¯1↑⍴img")
-
-(april "⍴m")
-; notice we've lost a dimension/axis!
-
-(april "m[1;]")
-
-
-(write-array-as-png (april "⎕←100 100 ⍴ 100?200"))
+(write-array (april "⎕←100 100 ⍴ 100?200"))
 
 (april "⎕←100 100 ⍴ 100?200")
 ; https://www.keyence.com/ss/products/auto_id/barcode_lecture/basic/mechanism/
