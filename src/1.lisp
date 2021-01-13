@@ -47,6 +47,9 @@
 
 ; We are using April!
 
+; You can try Dyalog here: 
+; https://tryapl.org/
+
 ; You can edit images with APL among many other things
 
 ; What are images?
@@ -98,12 +101,17 @@
 
 ; What is a pixel?
 
-(progn
-  (setf *sia* (opticl:read-png-file "images/sia.png"))
-  (look "images/sia.png"))
+(read-png "images/sia.png")
+
+; after you execute (read-png) a greyscale copy, resized if too big, of your image
+; is in april as the "img"
+
+; let's look at the size of it now
+(april "⍴img")
 
 ; let's look at one row of pixels
-(april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[1;]")
+(april "img[1;]")
+
 
 
 
@@ -343,6 +351,7 @@
 (write-array-as-png (april "(⍴m) ⍴ counts/values"))
 
 
+(april "m←img")
 
 
 ; TODO note that the wet bandits, after sobel, seem to have 
@@ -381,5 +390,5 @@
   ; sobel
   (april-f "final←((filteredx*2)+filteredy*2)*0.5")
 
-(write-array-as-png
+(write-array
     (april "255⌊0⌈⌈final÷kernelsum"))

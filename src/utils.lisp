@@ -8,6 +8,25 @@
 ; (setf *look-at-image* #'identity)
 (setf *look-at-image* #'jupyter:file)
 
+(defun read-png (path)
+  "converts to greyscale and sets img in april"
+  (progn
+    (april (with (:state 
+                   :in 
+                   ((img (opticl:read-png-file path)))))
+           "img←⌊(+/img)÷¯1↑⍴img")
+    (write-array (april "img") )))
+
+(defun write-array (a)
+  "right now it forces a resize to width 300 "
+  (let* ((dims (april-c "{⌊(⍴⍵)×300.0÷1↑⍴⍵}" a))
+       (rows (svref dims 0))
+       (cols (svref dims 1)))
+  (write-array-as-png (opticl:resize-image
+                        a
+                        rows
+                        cols))))
+
 
 
 (defun look (path)
