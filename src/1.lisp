@@ -17,11 +17,13 @@
 
 ; Because it is a computational notebook things are not hidden from you:
 
+; put your cursor in this cell and run it by pressing ctrl-enter
 (ql:quickload "april") 
 (ql:quickload "opticl")
 (ql:quickload "drakma")
 (ql:quickload "alexandria")
 
+; run this cell too
 (defpackage :image-filtering 
   (:nicknames :im)
   (:use :common-lisp :april :opticl :drakma :alexandria))
