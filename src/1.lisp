@@ -6,17 +6,16 @@
 (defpackage :image-filtering 
   (:nicknames :im)
   (:use :common-lisp :april :opticl :drakma :alexandria))
-
 (in-package :im)
-
 (load "src/utils.lisp")
 
 ; what is APL
-
+;
 ; APL
 ; is rules and meaning
 ;    (syntax and semantics)
-; some APLs are
+;
+; some APLs include:
 ;   Dyalog, GNU APL, April
 
 
@@ -27,55 +26,59 @@
 ; most math symbols do what you would expect them to do
 ; = + - ÷ × etc.
 
-; Nemonic
+; APL is nemonic
 
 
-Terms:
+; Terms:
 
-Scalar - first define outside of APL
+; Scalar - first define outside of APL
 (april "1")
 
 
-Vector
+; Vector
 (april "2 4 6 8")
 
-Dimensions, Rank, Shape
+; Dimensions, Rank, Shape
 (april "⍴1")
 (april "⍴2 4 6 8")
 (april "⍴⍴ 2 4 6 8")
 
 
-Matrix a.k.a "Array" 
+; Matrix a.k.a "Array" 
 (april-f "4 4 ⍴ 1 2 3" )
 (april  "⍴4 4 ⍴ 1 2 3" )
 (april "⍴⍴4 4 ⍴ 1 2 3" )
 
-Function
-Operand
+; Function
+; Operand
 
-Monadic
+; Monadic
 (april "÷ 9")
 
-Dyadic
+; Dyadic
 (april "4 + 6")
 
-Nested
-Item
-Pixel
-Axis
+; Nested
+
+; Item
+
+; Pixel
+
+; Axis
 
 
 
-Functions and Operators
-←
+; Functions and Operators
+
+; ←
 ; assignment
 (april "sam←3 4 5")
 (april "sam + 2")
 
-⍳
+; ⍳
 (april "⍳9")
 
-⍴
+; ⍴
 ; monadic ⍴ tells you the shape
 (april "⍴ 2 4 6 8 10")
 (april "⍴ sam")
@@ -94,7 +97,7 @@ Functions and Operators
 (write-array-as-png (april "m"))
 
 
-⍉
+; ⍉
 ; Transpose
 (april "⎕←twenty_five_square←5 5 ⍴ ⍳25")
 (april-f "twenty_five_square")
@@ -103,55 +106,56 @@ Functions and Operators
 (write-array-as-png (april "⍉m"))
 (write-array-as-png (april "⍉⍉m"))
 
-,
+; ,
 (april "20 30 40,sam")
 
 
-⎕
+; ⎕
 ; look
 (april "⎕← 8 7 6" )
 
-⋄
+; ⋄
 (april "1 ⋄ 2" )
 (april "⎕←1 ⋄ 2" )
 (april "⎕←1 ⋄ 2 ⋄ 99" )
 
-[ ]
+; [ ]
 (april "sam[1]")
 (april "⎕←m ⋄ 0")
 (april "m[1;]")
 
 
-+/
+; +/
 (april "+/1 3 5 7")
 (april "+/sam")
 
-⌈
+; ⌈
 (april "⌈4.2")
 
-⌊
+; ⌊
 (april "⌊4.2")
 
-|
+; |
 ; remainder
 (april "5|10")
 ; 10 divided by 5 is 2 and the remainder is 0
+
 (april "5|9")
 ; 9 divided by 5 is 1 and the remainder is 4
 
-¨
+; ¨
 (april "÷5")
 
 
-{}
+; {}
 
-⊂
+; ⊂
 
-⊃
+; ⊃
 
-∘.
+; ∘.
 
-*
+; *
 
 
 ;;;;;;;;;;;;;;;
