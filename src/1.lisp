@@ -1,3 +1,20 @@
+; Welcome to a Jupyter notebook!
+
+; Why are we in a Jupyter notebook?
+; 
+; We will be learning, editing, and running code in this notebook.
+
+
+; What is Jupyter?
+;
+; Computational Notebook (notebooks for code)
+
+; What can you do in a Jupyter notebook?
+; 
+; - look at code and the results of running the code
+; - edit the code
+; - run the code
+
 (ql:quickload "april") 
 (ql:quickload "opticl")
 (ql:quickload "drakma")
@@ -9,29 +26,73 @@
 (in-package :im)
 (load "src/utils.lisp")
 
-; what is APL
-;
-; APL
-; is rules and meaning
-;    (syntax and semantics)
-;
-; some APLs include:
-;   Dyalog, GNU APL, April
+; What is APL?
+;   "A Programming Language"
 
+; APL (the idea)
+;
+;    rules   (syntax)
+;    and
+;    meaning (semantics)
+;
+
+; APLs (the versions)
+; 
+; Some APLs include:
+;   Dyalog, GNU APL, and April
+
+; You can edit images with APL among many other things
+
+; What are images?
+; 
+; Is this an image?
+(april-f "0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0")
 
 ; Image Representation
 (write-array-as-png (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
 
+; Because images are represented as numbers we need some math to work with them
 
-; most math symbols do what you would expect them to do
+
+; In APL, most math symbols do what you would expect them to do
+;
 ; = + - ÷ × etc.
 
-; APL is nemonic
+; APL is a small language
+
+; How small?
+
+; TODO now load the symbols
 
 
-; Terms:
+; APL is designed to be mnemonic
+; 
+; https://www.merriam-webster.com/dictionary/mnemonic
 
-; Scalar - first define outside of APL
+
+
+; Behind every image on a computer there are just numbers
+;
+; For this class those numbers are: 0 through 255
+; 
+; 0   is black
+; 255 is white
+
+(download-jpg "http://images6.fanpop.com/image/photos/38400000/Sia-at-SNL-sia-38410276-540-304.jpg"
+              "sia.png")
+
+; Pixel
+
+(setf *sia* (opticl:read-png-file "sia.png"))
+(april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[200;]")
+
+
+
+; Terms
+;
+; We need to learn some words used in APL
+
+; Scalar
 (april "1")
 
 
@@ -44,25 +105,25 @@
 (april "⍴⍴ 2 4 6 8")
 
 
-; Matrix a.k.a "Array" 
+; Matrix a.k.a "Array"  a.k.a "grid 
 (april-f "4 4 ⍴ 1 2 3" )
 (april  "⍴4 4 ⍴ 1 2 3" )
 (april "⍴⍴4 4 ⍴ 1 2 3" )
 
-; Function
-; Operand
+; Function:
 
-; Monadic
+; Operands: TODO
+
+; Monadic Function
 (april "÷ 9")
 
-; Dyadic
+; Dyadic Function
 (april "4 + 6")
 
 ; Nested
 
 ; Item
 
-; Pixel
 
 ; Axis
 
@@ -73,6 +134,7 @@
 ; ←
 ; assignment
 (april "sam←3 4 5")
+(april "sam")
 (april "sam + 2")
 
 ; ⍳
