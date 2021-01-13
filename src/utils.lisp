@@ -10,6 +10,9 @@
 
 
 
+(defun look (path)
+  (funcall *look-at-image*
+           path))
 
 (defun write-array-as-png (a &optional (out-path "temp0.png"))
   "a: the array"

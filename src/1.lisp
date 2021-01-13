@@ -100,7 +100,7 @@
 
 (progn
   (setf *sia* (opticl:read-png-file "images/sia.png"))
-  0)
+  (look "images/sia.png"))
 
 ; let's look at one row of pixels
 (april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[1;]")
@@ -291,28 +291,34 @@
 
 (progn
   (download-jpg  "https://static.wikia.nocookie.net/homealone/images/4/47/Download-0.jpg/revision/latest/scale-to-width-down/259?cb=20170724041438" "some.jpg")
-  0)
+  (look "some.jpg"))
 (progn
   (setf *wet-bandits* (opticl:read-jpeg-file "some.jpg"))
   0)
 
-(jupyter:file "some.jpg")
 
-(uiop:run-program "identify some.jpg" :output t)
+; if you want an information overload run this cell.
+; it will tell you lots of information about the file "some.jpg"
+(uiop:run-program "identify -verbose some.jpg" :output t)
 
-; get the image into april
-(april (with (:state :in ((a *wet-bandits*)))) "img←a")
+; get the image into april so you can explore it
+(progn
+  (april (with (:state :in ((a *wet-bandits*)))) "img←a")
+  0)
+
+; now inside april the variable "img" holds our image
 
 
+; let's look at the shape of the image
 (april "⍴img")
 
-; to grayscale
+; let's turn it to grayscale
 (april "m←⌊(+/img)÷¯1↑⍴img")
 
 (april "⍴m")
-; notice we've lost a dimension (axis?)
+; notice we've lost a dimension/axis!
 
-(april "m")
+(april "m[1;]")
 
 
 (write-array-as-png (april "⎕←100 100 ⍴ 100?200"))
@@ -325,13 +331,15 @@
 ;;;;;;;;;;;
 
 
-(april "img")
-(april "m←⌊(+/img)÷¯1↑⍴img")
-(april "res←{⍺,≢⍵} ⌸ ,m")
-(april-f "sorted←res[⍋⌽res;]")
-(april-f "sorted←res[⍒res;]")
-(april "values←sorted[⍳1⊃⍴sorted;1]") ; values
-(april "counts←sorted[⍳1⊃⍴sorted;2]") ; counts
+(progn
+  (april "img")
+  (april "m←⌊(+/img)÷¯1↑⍴img")
+  (april "res←{⍺,≢⍵} ⌸ ,m")
+  (april-f "sorted←res[⍋⌽res;]")
+  (april-f "sorted←res[⍒res;]")
+  (april "values←sorted[⍳1⊃⍴sorted;1]")
+  (april "counts←sorted[⍳1⊃⍴sorted;2]")
+  0)
 (write-array-as-png (april "(⍴m) ⍴ counts/values"))
 
 
@@ -340,25 +348,38 @@
 ; TODO note that the wet bandits, after sobel, seem to have 
 ; extra information. jpeg artifacts?
 
-; one shot
-(progn
+; edge detection
+
   (april "one← ¯1  0  1")
   (april "two← ¯2  0  2")
   (april "thr← ¯1  0  1")
-  (april "kernel←3 3 ⍴ one,two,thr")
+
+  (april "⎕←kernel←3 3 ⍴ one,two,thr")
+
   (april-f "kernelsum←1⌈|⌊+/+/kernel") ; the sum's absolute value
-  (april "g←⍉kernel")
+
+  (april "⎕←g←⍉kernel")
+
   (april-f "pairs←,(¯1+⍳(¯2+(⍴m)[1]))∘.,¯1+⍳(¯2+(⍴m)[2])")
+
   (april "get_submats←{row←⍵[1]⋄col←⍵[2]⋄m[row+⍳3;col+⍳3]}")
+
   (april "sub_mats←get_submats¨pairs")
+
   (april-f "Gx←(⊂kernel)×sub_mats") ; gradient in x
+
   (april-f "Gy←(⊂g)×sub_mats")      ; gradient in y
+
   (april-f "filteredx ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gx")
+
   (april-f "filteredy ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gy")
+
   ; now only keep if above a threshhold
   ; (april "filtered←filtered×filtered<150")
   ;
+
   ; sobel
   (april-f "final←((filteredx*2)+filteredy*2)*0.5")
-  (write-array-as-png
-    (april "255⌊0⌈⌈final÷kernelsum")))
+
+(write-array-as-png
+    (april "255⌊0⌈⌈final÷kernelsum"))
