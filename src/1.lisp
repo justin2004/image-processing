@@ -26,7 +26,7 @@
   (:nicknames :im)
   (:use :common-lisp :april :opticl :drakma :alexandria))
 (in-package :im)
-(load "src/utils.lisp")
+(load "utils.lisp")
 
 ; What is APL?
 ;   "A Programming Language"
@@ -43,12 +43,19 @@
 ; Some APLs include:
 ;   Dyalog, GNU APL, and April
 
+; We are using April!
+
 ; You can edit images with APL among many other things
 
 ; What are images?
  
 ; Is this an image?
 (april-f "0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0")
+
+; ...about April
+; notice the -f
+;
+; I think about the -f as meaning "friendly"
 
 ; Image Representation
 (write-array-as-png (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
@@ -90,9 +97,10 @@
 ; What is a pixel?
 
 (progn
-  (setf *sia* (opticl:read-png-file "sia.png"))
+  (setf *sia* (opticl:read-png-file "images/sia.png"))
   0)
 
+; let's look at one row of pixels
 (april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[1;]")
 
 
@@ -109,7 +117,13 @@
 (april "2 4 6 8")
 
 
-; Please Excuse My Dear Aunt Sally
+; Please Excuse My Dear Aunt Sally?
+
+; Order of Operations in APL:
+; 
+; right to left
+; and
+; the space between vectors are strong!
 
 ; Dimensions, Rank, Shape
 
@@ -120,7 +134,7 @@
 (april "⍴⍴ 2 4 6 8")
 
 
-; Matrix a.k.a "Array"  a.k.a "grid 
+; Matrix a.k.a "Array"  a.k.a "grid"
 
 (april-f "4 4 ⍴ 1 2 3" )
 
@@ -135,10 +149,14 @@
 ; Monadic Function
 
 (april "÷ 9")
+; mon-  mono-
+; : one : single : alone 
 
 ; Dyadic Function
 
 (april "4 + 6")
+; dyad
+; : pair
 
 ; Nested
 
@@ -180,7 +198,6 @@
 
 (april "m←20 20 ⍴ v")
 
-; notice the -f
 (april-f "m")
 
 (write-array-as-png (april "m"))
@@ -265,25 +282,25 @@
 ; *
 
 
+
 ;;;;;;;;;;;;;;;
 
 
-(jupyter:file "/tmp/la0.png")
 
+(progn
+  (download-jpg  "https://static.wikia.nocookie.net/homealone/images/4/47/Download-0.jpg/revision/latest/scale-to-width-down/259?cb=20170724041438" "some.jpg")
+  0)
+(progn
+  (setf *wet-bandits* (opticl:read-jpeg-file "some.jpg"))
+  0)
 
+(jupyter:file "some.jpg")
 
-(download-jpg  "https://static.wikia.nocookie.net/homealone/images/4/47/Download-0.jpg/revision/latest/scale-to-width-down/259?cb=20170724041438" "some.jpg")
-(setf *wet-bandits* (opticl:read-jpeg-file "some.jpg"))
-
-(jupyter:file "/tmp/la0.jpg")
-
-(uiop:run-program "identify /tmp/la0.jpg" :output t)
-(uiop:run-program "file /tmp/la0.jpg" :output t)
+(uiop:run-program "identify some.jpg" :output t)
 
 ; get the image into april
 (april (with (:state :in ((a *wet-bandits*)))) "img←a")
 
-(list-all-packages)
 
 (april "⍴img")
 
@@ -295,14 +312,12 @@
 
 (april "m")
 
-(jupyter:file (namestring (write-array-as-png (april:april "⎕←m"))))
-
 
 (write-array-as-png (april "⎕←100 100 ⍴ 100?200"))
 
-(run "⎕←100 100 ⍴ 100?200")
+(april "⎕←100 100 ⍴ 100?200")
 ; https://www.keyence.com/ss/products/auto_id/barcode_lecture/basic/mechanism/
-; homework, make a barcode?
+; make a barcode?
 
 
 ;;;;;;;;;;;

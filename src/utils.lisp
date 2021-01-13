@@ -3,10 +3,9 @@
 
 ; TODO write a resize image function to make filters fast
 
-(find-package 'im)
 
 
-; (setf *blah* #'identity)
+; (setf *look-at-image* #'identity)
 (setf *look-at-image* #'jupyter:file)
 
 
