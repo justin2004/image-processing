@@ -1,5 +1,6 @@
 FROM yitzchak/common-lisp-jupyter
 
+USER root
 RUN pacman -Sy --noconfirm imagemagick
 
 USER app
