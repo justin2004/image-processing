@@ -15,6 +15,8 @@
 ; - edit the code
 ; - run the code
 
+; Because it is a computational notebook things are not hidden from you:
+
 (ql:quickload "april") 
 (ql:quickload "opticl")
 (ql:quickload "drakma")
@@ -44,7 +46,7 @@
 ; You can edit images with APL among many other things
 
 ; What are images?
-; 
+ 
 ; Is this an image?
 (april-f "0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0")
 
@@ -63,6 +65,10 @@
 ; How small?
 
 ; TODO now load the symbols
+
+; var script = document.createElement ("script");
+; script.src = "https://abrudz.github.io/lb/lb.js";
+; document.body.appendChild (script);
 
 
 ; APL is designed to be mnemonic
@@ -84,7 +90,8 @@
 ; Pixel
 
 (setf *sia* (opticl:read-png-file "sia.png"))
-(april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[200;]")
+
+(april (with (:state :in ((img *sia*))))  "m←⌊(+/img)÷¯1↑⍴img ⋄ m[1;]")
 
 
 
@@ -100,14 +107,20 @@
 (april "2 4 6 8")
 
 ; Dimensions, Rank, Shape
+
 (april "⍴1")
+
 (april "⍴2 4 6 8")
+
 (april "⍴⍴ 2 4 6 8")
 
 
 ; Matrix a.k.a "Array"  a.k.a "grid 
+
 (april-f "4 4 ⍴ 1 2 3" )
+
 (april  "⍴4 4 ⍴ 1 2 3" )
+
 (april "⍴⍴4 4 ⍴ 1 2 3" )
 
 ; Function:
@@ -115,15 +128,16 @@
 ; Operands: TODO
 
 ; Monadic Function
+
 (april "÷ 9")
 
 ; Dyadic Function
+
 (april "4 + 6")
 
 ; Nested
 
 ; Item
-
 
 ; Axis
 
@@ -133,16 +147,22 @@
 
 ; ←
 ; assignment
+
 (april "sam←3 4 5")
+
 (april "sam")
+
 (april "sam + 2")
 
 ; ⍳
+
 (april "⍳9")
 
 ; ⍴
-; monadic ⍴ tells you the shape
+; monadic ⍴ tells you the shape of something
+
 (april "⍴ 2 4 6 8 10")
+
 (april "⍴ sam")
 
 ; dyadic ⍴ reshapes
@@ -154,51 +174,70 @@
 (april "v←0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 168 168 168 168 168 168 168 0 0 0 0 0 0 0 0 0 0 0 168 168 168 168 168 168 168 168 168 168 168 0 0 0 0 0 0 0 0 168 168 168 168 168 168 168 168 168 168 168 168 168 0 0 0 0 0 0 168 168 168 168 0 0 168 168 168 82 0 168 168 168 168 0 0 0 0 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 0 0 2 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 0 0 168 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 168 0 168 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 86 168 168 168 168 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 168 168 168 168 152 168 168 0 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 168 0 168 168 0 168 168 153 168 168 168 168 168 168 168 168 168 168 168 168 168 152 168 168 0 168 168 168 151 168 168 168 168 168 168 168 168 168 168 168 0 168 168 168 0 0 168 168 0 168 168 168 168 168 168 168 168 168 168 168 144 168 168 0 0 93 168 168 168 0 168 168 168 168 168 168 168 168 168 0 168 168 168 88 0 145 0 168 168 168 142 0 168 168 168 168 168 0 168 168 168 168 168 142 0 168 0 0 168 168 168 168 168 4 0 9 168 168 168 168 168 0 34 168 0 150 121 40 0 168 168 168 168 168 168 168 168 168 168 168 168 37 0 150 0 0 168 168 53 168 0 168 168 168 168 168 168 168 0 168 0 168 157 0")
 
 (april "m←20 20 ⍴ v")
+
 ; notice the -f
 (april-f "m")
+
 (write-array-as-png (april "m"))
 
 
 ; ⍉
 ; Transpose
+
 (april "⎕←twenty_five_square←5 5 ⍴ ⍳25")
+
 (april-f "twenty_five_square")
+
 (april-f "⍉twenty_five_square")
 
 (write-array-as-png (april "⍉m"))
+
 (write-array-as-png (april "⍉⍉m"))
 
 ; ,
+
 (april "20 30 40,sam")
 
 
 ; ⎕
 ; look
+
 (april "⎕← 8 7 6" )
 
 ; ⋄
+
 (april "1 ⋄ 2" )
+
 (april "⎕←1 ⋄ 2" )
+
 (april "⎕←1 ⋄ 2 ⋄ 99" )
 
 ; [ ]
+
 (april "sam[1]")
+
 (april "⎕←m ⋄ 0")
+
 (april "m[1;]")
 
 
 ; +/
+
 (april "+/1 3 5 7")
+
 (april "+/sam")
 
 ; ⌈
+
 (april "⌈4.2")
 
 ; ⌊
+
 (april "⌊4.2")
 
 ; |
 ; remainder
+
 (april "5|10")
 ; 10 divided by 5 is 2 and the remainder is 0
 
@@ -206,6 +245,7 @@
 ; 9 divided by 5 is 1 and the remainder is 4
 
 ; ¨
+
 (april "÷5")
 
 
