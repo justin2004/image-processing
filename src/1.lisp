@@ -22,8 +22,6 @@
 (ql:quickload "opticl")
 (ql:quickload "drakma")
 (ql:quickload "alexandria")
-
-; run this cell too
 (defpackage :image-filtering 
   (:nicknames :im)
   (:use :common-lisp :april :opticl :drakma :alexandria))
