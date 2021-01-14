@@ -15,7 +15,11 @@
 ; - edit the code
 ; - run the code
 
-; Because it is a computational notebook things are not hidden from you:
+; Because it is a computational notebook things are not hidden from you
+;
+; So in addition to reading notes and code you sometimes have to run cells
+;
+; You run cells by pressing ctrl-enter or (on a Mac) cmd-enter 
 
 ; put your cursor in this cell and run it by pressing ctrl-enter
 (ql:quickload "april") 
@@ -31,7 +35,7 @@
 ; What is APL?
 ;   "A Programming Language"
 
-; APL (the idea)
+; APL (the langauge)
 ;
 ;    rules   (syntax)
 ;    and
@@ -74,7 +78,9 @@
 
 ; How small?
 
-; TODO now load the symbols
+; In order to see the APL symbols we need to load some javascript in your browser
+; 
+; This is usually done in the "Console" often found in "Developer Tools"
 
 var script = document.createElement ("script");
 script.src = "https://abrudz.github.io/lb/lb.js";
@@ -96,16 +102,18 @@ document.body.appendChild (script);
 
 
 ; What is a pixel?
+;  : PIcture ELement
 
-; let's look at some
+; let's look at some pixels
+;
 ; first we need an image
 (read-png "images/sia.png")
 
-; after you execute (read-png) a greyscale copy, resized if too big, of your image
+; after you execute (read-png) a greyscale copy of your image
 ; is in April as "img"
 
-; let's look at the size of it now
-(april "⍴img")
+; let's look at the size of it now using ⍴
+(april "⍴ img")
 
 
 ; let's look at a single pixel
@@ -196,11 +204,11 @@ document.body.appendChild (script);
 
 (april "sam ÷ 2")
 
-; ⍳
+; ⍳  iota
 
 (april "⍳9")
 
-; ⍴
+; ⍴  rho
 ; monadic ⍴ tells you the shape of something
 
 (april "⍴ 2 4 6 8 10")
@@ -233,7 +241,7 @@ document.body.appendChild (script);
 
 (write-array (april "⍉m"))
 
-; let's do that to sia
+; let's transpose the image of sia
 (write-array (april "⍉img"))
 
 (write-array (april "⍉⍉m"))
@@ -322,22 +330,22 @@ document.body.appendChild (script);
 ; make a barcode?
 
 
+
+
 ;;;;;;;;;;;
-
-
 (progn
-  (april "img")
-  (april "m←⌊(+/img)÷¯1↑⍴img")
+  (april "m←img")
+  ; (april "m←⌊(+/img)÷¯1↑⍴img")
   (april "res←{⍺,≢⍵} ⌸ ,m")
   (april-f "sorted←res[⍋⌽res;]")
-  (april-f "sorted←res[⍒res;]")
+  ; (april-f "sorted←res[⍒res;]")
   (april "values←sorted[⍳1⊃⍴sorted;1]")
   (april "counts←sorted[⍳1⊃⍴sorted;2]")
   0)
-(write-array-as-png (april "(⍴m) ⍴ counts/values"))
+(write-array (april "(⍴m) ⍴ counts/values"))
+;;;;;;;;;;;;;;;;;
 
 
-(april "m←img")
 
 
 ; TODO note that the wet bandits, after sobel, seem to have 

@@ -1,9 +1,6 @@
 (in-package :im)
 
 
-; TODO write a resize image function to make filters fast
-
-
 
 ; (setf *look-at-image* #'identity)
 (setf *look-at-image* #'jupyter:file)
