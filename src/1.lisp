@@ -33,6 +33,7 @@
 (load "utils.lisp")
 
 ; What is APL?
+;
 ;   "A Programming Language"
 
 ; APL (the langauge)
@@ -311,6 +312,18 @@ document.body.appendChild (script);
 
 ; *
 
+
+;;;;;;;;;;;;;;;
+
+(write-array (april "⊖img"))
+
+(write-array (april "⌽img"))
+
+(write-array (april "img,⌽img"))
+
+(write-array (april "{⍵,[1]⊖⍵}img,⌽img"))
+
+(write-array (april "{⍵,[1]⊖⍵} (¯230⌽img),230⌽⌽img"))
 
 
 ;;;;;;;;;;;;;;;
