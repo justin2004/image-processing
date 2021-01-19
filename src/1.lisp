@@ -314,6 +314,7 @@ document.body.appendChild (script);
 
 
 ;;;;;;;;;;;;;;;
+; some rotations, flips, etc.
 
 (write-array (april "⊖img"))
 
