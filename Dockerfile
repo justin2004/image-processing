@@ -1,4 +1,4 @@
-FROM yitzchak/common-lisp-jupyter
+FROM justin2004/common-lisp-jupyter
 
 USER root
 RUN pacman -Sy --noconfirm imagemagick
