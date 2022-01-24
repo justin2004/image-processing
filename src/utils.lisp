@@ -57,3 +57,32 @@
 ;   (jupyter:file (namestring 
 ;                   (write-array-as-png 
 ;                     (april:april apl-string)))))
+
+
+
+(defun write-animated-gif (vec)
+  "vec: a vector of mats"
+  (let* ((delay 100)
+         (first-mat-dims (array-dimensions (elt vec 0))) ; assumes all mats have the same dims as the first
+         (height (first first-mat-dims))
+         (width (second first-mat-dims))
+         (color-table (skippy:make-color-table))
+         (data-stream (skippy:make-data-stream :height height
+                                               :width width
+                                               :color-table color-table))
+         ; (image (make-image :delay-time 100 :height height :width width))
+         (images (mapcar #'(lambda (mat)
+                             (let* ((im (skippy:make-image :delay-time delay
+                                                           :height height
+                                                           :width width))
+                                    (x (setf (skippy:image-data im) (make-array (* height width) 
+                                                                                :element-type '(unsigned-byte 8)
+                                                                                :initial-contents 
+                                                                                (april::array-to-list (april:april-c "{,⍵}" mat)))))
+                                    (y (skippy:add-image im data-stream)))))
+                         (april::array-to-list vec))))
+    (dotimes (i 256) 
+      (skippy:add-color (skippy:rgb-color i i i)
+                        color-table))
+    (setf (skippy:loopingp data-stream) t)
+    (skippy:output-data-stream data-stream #p"example3.gif")))

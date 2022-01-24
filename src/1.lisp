@@ -26,6 +26,7 @@
 (ql:quickload "opticl")
 (ql:quickload "drakma")
 (ql:quickload "alexandria")
+(ql:quickload "skippy")
 (defpackage :image-filtering 
   (:nicknames :im)
   (:use :common-lisp :april :opticl :drakma :alexandria))
@@ -168,6 +169,30 @@ document.body.appendChild (script);
 
 (april "⍴⍴4 4 ⍴ 1 2 3" )
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Let's generate some random images
+
+; first an image with all black pixels
+(write-array (april "10 10 ⍴ 0"))
+
+; an image with all white pixels
+(write-array (april "10 10 ⍴ 255"))
+
+; an image with all grey pixels
+(write-array (april "10 10 ⍴ 100"))
+
+; ?
+; roll
+
+(april "?255")
+
+; a 10 by 10 pixel image with random pixel values
+(write-array (april "?10 10 ⍴ 255"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ; Function and Operands:
 (april "8 - 3")
 ; - is the function
@@ -222,8 +247,10 @@ document.body.appendChild (script);
 
 
 
+; assign to v this vector
 (april "v←0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 168 168 168 168 168 168 168 0 0 0 0 0 0 0 0 0 0 0 168 168 168 168 168 168 168 168 168 168 168 0 0 0 0 0 0 0 0 168 168 168 168 168 168 168 168 168 168 168 168 168 0 0 0 0 0 0 168 168 168 168 0 0 168 168 168 82 0 168 168 168 168 0 0 0 0 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 0 0 2 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 0 0 168 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 168 0 168 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 86 168 168 168 168 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 168 168 168 168 152 168 168 0 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 168 0 168 168 0 168 168 153 168 168 168 168 168 168 168 168 168 168 168 168 168 152 168 168 0 168 168 168 151 168 168 168 168 168 168 168 168 168 168 168 0 168 168 168 0 0 168 168 0 168 168 168 168 168 168 168 168 168 168 168 144 168 168 0 0 93 168 168 168 0 168 168 168 168 168 168 168 168 168 0 168 168 168 88 0 145 0 168 168 168 142 0 168 168 168 168 168 0 168 168 168 168 168 142 0 168 0 0 168 168 168 168 168 4 0 9 168 168 168 168 168 0 34 168 0 150 121 40 0 168 168 168 168 168 168 168 168 168 168 168 168 37 0 150 0 0 168 168 53 168 0 168 168 168 168 168 168 168 0 168 0 168 157 0")
 
+; assign to m the 20 20 reshape of v
 (april "m←20 20 ⍴ v")
 
 (april-f "m")
@@ -247,9 +274,25 @@ document.body.appendChild (script);
 
 (write-array (april "⍉⍉m"))
 
-; ,
+; ,  comma
+; catenate
 
 (april "20 30 40,sam")
+
+;;;;;;;;;;;;;;;;;;;;;
+
+; let's generate an image more programmatically
+
+(april "a←?100 50 ⍴ 10")
+(april "b←?100 50 ⍴ 50")
+(april "c←?100 50 ⍴ 100")
+(april "d←?100 50 ⍴ 255")
+(april "ab←⍉a,b,c,d")
+
+(write-animated-gif (april:april "aa ab ac"))
+
+
+;;;;;;;;;;;;;;;;;;;;
 
 
 ; ⎕
@@ -258,6 +301,7 @@ document.body.appendChild (script);
 (april "⎕← 8 7 6" )
 
 ; ⋄
+; end of expression
 
 (april "1 ⋄ 2" )
 
@@ -266,6 +310,7 @@ document.body.appendChild (script);
 (april "⎕←1 ⋄ 2 ⋄ 99" )
 
 ; [ ]
+; indexing
 
 (april "sam[1]")
 
@@ -275,14 +320,21 @@ document.body.appendChild (script);
 
 
 ; +/
+; plus reduce
+; plus "plop"
 
 (april "+/1 3 5 7")
 
 (april "+/sam")
 
 ; ⌈
+; (monadic) round up
+; (dyadic) maximum
+
 
 (april "⌈4.2")
+
+(april "9⌈8")
 
 ; ⌊
 
@@ -297,9 +349,6 @@ document.body.appendChild (script);
 (april "5|9")
 ; 9 divided by 5 is 1 and the remainder is 4
 
-; ¨
-
-(april "÷5")
 
 
 ; {}
@@ -359,6 +408,8 @@ document.body.appendChild (script);
 (write-array (april "(⍴m) ⍴ counts/values"))
 ;;;;;;;;;;;;;;;;;
 
+; what color occurs most often?
+
 
 
 
@@ -367,27 +418,84 @@ document.body.appendChild (script);
 
 ; edge detection
 
-  (april "one← ¯1  0  1")
-  (april "two← ¯2  0  2")
-  (april "thr← ¯1  0  1")
+(april "one← ¯1  0  1")
+(april "two← ¯2  0  2")
+(april "thr← ¯1  0  1")
 
-  (april "⎕←kernel←3 3 ⍴ one,two,thr")
+(april "⎕←kernel←3 3 ⍴ one,two,thr")
 
-  (april-f "kernelsum←1⌈|⌊+/+/kernel") ; the sum's absolute value
+(april-f "kernelsum←1⌈|⌊+/+/kernel") ; the sum's absolute value
 
-  (april "⎕←g←⍉kernel")
+(april "⎕←g←⍉kernel")
 
-  (april-f "pairs←,(¯1+⍳(¯2+(⍴m)[1]))∘.,¯1+⍳(¯2+(⍴m)[2])")
+(april-f "pairs←,(¯1+⍳(¯2+(⍴m)[1]))∘.,¯1+⍳(¯2+(⍴m)[2])")
+(april "pairs[⍳10]")
+(april "¯1+⍳(¯2+(⍴m)[2])")
 
-  (april "get_submats←{row←⍵[1]⋄col←⍵[2]⋄m[row+⍳3;col+⍳3]}")
+(april "get_submats←{row←⍵[1]⋄col←⍵[2]⋄m[row+⍳3;col+⍳3]}")
+(april-f "m[50;50]")
+(april-f "get_submats 300 200")
+;; here
+(april-f "+/¨+/¨(⊂kernel)×sub_mats[1 2 3]")
+(april-f "      (⊂kernel)×sub_mats[1 2 3]")
 
-  (april "sub_mats←get_submats¨pairs")
+(flamegraph:save-flame-graph ("/mnt/mysobel.flame") 
+                             (april "sub_mats←get_submats¨pairs"))
 
-  (april-f "Gx←(⊂kernel)×sub_mats") ; gradient in x
+(april "Gx←(⊂kernel)×sub_mats") ; gradient in x
+(april "Gx[1]")
+
+(april "⍴m")
+(write-array (april "littlem←(250⊖200⌽m)[⍳10;⍳10]"))
+(april "{+/+/kernel×⍵}⌺3 3⊢m")
+(april "{+/+/kernel×⍵}⌺3 3⊢m")
+(april "⍴m")
+(april "{+/+/kernel×⍵}⌺3 3⊢10 10 ⍴ ⍳100")
+(defmacro bob (a)
+  `(loop :for i :from 0 :to 1000
+         :collect (progn 
+                    (sleep 0.01)
+                    (list ,a))))
+(bob 88)
+(flamegraph:save-flame-graph ("/mnt/some.flame") 
+  (april "{+/+/kernel×⍵}⌺3 3⊢m"))
+(april (:with (:compile-only)) "filteredx←{+/+/kernel×⍵}⌺3 3⊢m")
+(april  "filteredx←{+/+/kernel×⍵}⌺3 3⊢m")
+(april "⍴ filteredx")
+(flamegraph:save-flame-graph ("/mnt/some.flame") 
+  (blah))
+;;;;;;;;;;;
+; CL-USER> (defun foo ()
+;            (sleep 0.01))
+; FOO
+; CL-USER> (defun bar ()
+;            (sleep 0.05))
+; BAR
+; CL-USER> (defun blah ()
+;            (loop repeat 1000
+;                  do (foo)
+;                     (bar)))
+;;;;;;;;;;;
+(april "filteredy←{+/+/g×⍵}⌺3 3⊢m")
+(write-array (april "255⌊0⌈⌈filteredy÷kernelsum"))
+(april "255⌊0⌈⌈filteredy÷kernelsum")
+(write-array (april "255⌊0⌈⌈filteredx÷kernelsum"))
+(april-f "kernel× 3 3 ⍴ ⍳9")
+(april "⊢⌺3 3⊢littlem")
+(april "+/,{+/+/⍵}⌺3 3⊢304 540 ⍴ ⍳20")
+(april-f "⊢⌺3 3⊢6 5 ⍴ ⍳5")
+(write-array (april "m"))
+(ql:system-apropos "monitor")
+(ql:quickload "cl-monitors")
+(ql:quickload "chronicity")
+(ql:system-apropos "oni")
+(cl-monitors:monitor "ff" )
+(ql:quickload :flamegraph)
 
   (april-f "Gy←(⊂g)×sub_mats")      ; gradient in y
 
   (april-f "filteredx ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gx")
+(april "filteredx[1 2 3;]")
 
   (april-f "filteredy ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gy")
 
@@ -400,3 +508,30 @@ document.body.appendChild (script);
 
 (write-array
     (april "255⌊0⌈⌈final÷kernelsum"))
+
+(april "final×final<50")
+(write-array
+    (april "255⌊0⌈⌈final×final>200÷kernelsum"))
+
+
+(april "f←{⎕←⍵ ⋄ ⍵} ⋄ f\\1 2 3")
+(april "f←{⍺,⍵} ⋄ f/1 2 3")
+
+(write-array (april-c "{5 5 3 ↑⍵}" (opticl:read-png-file "./images/sia.png")))
+(april-c "{⍴⍵}" (opticl:read-png-file "./images/sia.png"))
+(april "(+/÷(¯1↑⍴)) 5 5 3 ⍴ ⍳75")
+(april "5 5 3 ⍴ ⍳75")
+(+ 1 2 (print (+ 3 3)))
+(april "2 2⌷5 5 ⍴⍳50")
+; +/⍵ ÷ ⍴⍵ 
+(april (test))
+(uiop:directory-files "." )
+(let ((pid (sb-posix:getpid)))
+  (uiop:run-program (format nil "cat /proc/~A/cmdline" pid)
+                    :output t))
+
+(remove-if #'evenp (alexandria:iota 50))
+(delete-file )
+
+(type-of (april::array-to-list *sia*))
+(type-of *sia*)
