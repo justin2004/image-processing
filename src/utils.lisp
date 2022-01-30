@@ -2,8 +2,8 @@
 
 
 
-; (setf *look-at-image* #'identity)
-(setf *look-at-image* #'jupyter:file)
+(setf *look-at-image* #'identity)
+; (setf *look-at-image* #'jupyter:file)
 
 (defun read-png (path)
   "converts to greyscale and sets img in april"
@@ -74,12 +74,12 @@
          (images (mapcar #'(lambda (mat)
                              (let* ((im (skippy:make-image :delay-time delay
                                                            :height height
-                                                           :width width))
-                                    (x (setf (skippy:image-data im) (make-array (* height width) 
-                                                                                :element-type '(unsigned-byte 8)
-                                                                                :initial-contents 
-                                                                                (april::array-to-list (april:april-c "{,⍵}" mat)))))
-                                    (y (skippy:add-image im data-stream)))))
+                                                           :width width)))
+                               (setf (skippy:image-data im) (make-array (* height width) 
+                                                                        :element-type '(unsigned-byte 8)
+                                                                        :initial-contents 
+                                                                        (april::array-to-list (april:april-c "{,⍵}" mat))))
+                               (skippy:add-image im data-stream)))
                          (april::array-to-list vec))))
     (dotimes (i 256) 
       (skippy:add-color (skippy:rgb-color i i i)
