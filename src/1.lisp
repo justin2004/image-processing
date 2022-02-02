@@ -101,6 +101,8 @@ document.body.appendChild (script);
 ; 
 ; 0   is black
 ; 255 is white
+; 
+; What number represents gray?
 
 
 ; What is a pixel?
@@ -287,9 +289,29 @@ document.body.appendChild (script);
 (april "b←?100 50 ⍴ 50")
 (april "c←?100 50 ⍴ 100")
 (april "d←?100 50 ⍴ 255")
-(april "ab←⍉a,b,c,d")
+(april-f "a")
+(april-f "a,b")
+(april-f "⍉a")
+(april "ac←⍉a,b,c,d")
 
-(write-animated-gif (april:april "aa ab ac"))
+(write-animated-gif (april "aa ab ac"))
+
+
+(april "rv←255×¯1+?10⍴2")
+(write-array (april "12 11 ⍴ rv"))
+
+(april "rvfP←{$[0≡⊂⍵ ;
+                ⊂255×¯1+?⍺⍴2 ;
+                ⍵, ⊂255×¯1+?⍺⍴2 ]
+             }")
+(april "10 rvfP 0")
+(write-animated-gif (april "{200 211 ⍴ ⍵}¨(10∘rvfP⍣20) 0"))
+
+
+(write-array (april "rv←255×¯1+?10⍴2 ⋄ 11 11 ⍴ rv"))
+(april "rvf⍣2 1")
+
+(april "20 20∘⍴⊃ 20 rvfP 0" )
 
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -369,6 +391,11 @@ document.body.appendChild (script);
 
 (write-array (april "⌽img"))
 
+(write-animated-gif (april "img (⌽img) (⊖img)"))
+(write-animated-gif (april "img (100⌽img)"))
+(write-animated-gif (april "img (100⌽img)"))
+(april-f "5 5 ⍴ ⍳ 25")
+
 (write-array (april "img,⌽img"))
 
 (write-array (april "{⍵,[1]⊖⍵}img,⌽img"))
@@ -395,6 +422,16 @@ document.body.appendChild (script);
 
 
 
+;;;;;;;;;;;
+(april-f "v←200×0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0⋄ m←5 6 ⍴ v ")
+(april-f "m")
+(write-array (april "m"))
+(write-array (april-f "⌊({(+/+/÷×/∘⍴)⍵}⌺ 3 3) img"))
+(april "(+/+/÷×/) 3 3 ⍴ ⍳9")
+(april "(×/∘⍴) 3 3 ⍴ ⍳9")
+(april "⌊3 3 ⍴ 4÷3")
+;;;
+(april "m")
 ;;;;;;;;;;;
 (progn
   (april "m←img")
