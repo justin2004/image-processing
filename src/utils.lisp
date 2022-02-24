@@ -2,8 +2,8 @@
 
 
 
-(setf *look-at-image* #'identity)
-; (setf *look-at-image* #'jupyter:file)
+; (setf *look-at-image* #'identity)
+(setf *look-at-image* #'jupyter:file)
 
 (defun read-png (path)
   "converts to greyscale and sets img in april"
