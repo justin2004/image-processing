@@ -352,26 +352,31 @@ document.body.appendChild (script);
 
 ; let's make a mask
 (write-array (april "img"))
+
 (write-array (april "mask←img<20"))
+
 (write-array (april "mask×255"))
 
 ; and use the mask
 (write-array (april "one←mask×?(⍴img) ⍴ 255"))
+
 (write-array (april "two←mask×?(⍴img) ⍴ 255"))
+
 (write-animated-gif (april "img one two"))
 
 ;;;;;;;
 
 (read-png "images/Dua_Lipa.png")
+
 (read-png "images/Columbus-Skyline.png")
+
 (write-array (april "img"))
+
 (april "masks←(⊂img)<20 40 60 40")
+
 (april "masks←(⊂img)<20 40 60 100 150 200 255")
+
 (write-animated-gif (april "masks×⊂img"))
-(write-array (april "255×neon_mask←170<img"))
-(write-array (april "255⌊img+neon_mask×255"))
-; (april-f "4 5 6 (,⍤1 0) 3 3 ⍴ ⍳9")
-; (april-f "4 5 6 , 3 3 ⍴ ⍳9")
 
 
 ;;;;;;;;;;;;;;;;;;;;;
@@ -403,74 +408,118 @@ document.body.appendChild (script);
 ;;;;;;;;;;;;;;;;;;;;
 
 ; convolution kernels
+; using the stencil function:  ⌺
 
-(april-f "⎕←m←4 4 ⍴ ⍳25")
-(april-f "+/+/m")
+(april "⎕←m←4 4 ⍴ ⍳25")
+
 (april-f "({⍵}⌺ 3 3) m")
+
+(april-f "({+/,⍵}⌺ 3 3) m") ; adding up all cells in each matrix
+
 (april "⎕←kernel←3 3 ⍴ 0 ¯1 0 ¯1 5 ¯1 0 ¯1 0")
-(april-f "({+/+/⍵}⌺ 3 3) m") ; adding up all cells in the matrix
-(write-array (april-f "255⌊({+/+/⍵}⌺ 3 3) img")) ; adding up all cells in the matrix
+
+(write-array (april-f "255⌊({+/,⍵}⌺ 3 3) img")) ; adding up all cells in each matrix
+
 (april-f "result←({+/+/kernel×⍵}⌺ 3 3) img ⋄ 0"); sharpen kernel
+
 (write-array (april "0⌈255⌊result"))
+
 (april-f "result1←({+/+/kernel×⍵}⌺ 3 3) (225⌊result) ⋄ 0"); sharpen kernel
+
 (april-f "result2←({+/+/kernel×⍵}⌺ 3 3) (225⌊result1) ⋄ 0"); sharpen kernel
+
 (april-f "result3←({+/+/kernel×⍵}⌺ 3 3) (225⌊result2) ⋄ 0"); sharpen kernel
+
 (write-array (april "0⌈255⌊result3"))
-(write-array (april "small←100 100 ↑ img"))
-(write-array (april "small"))
+
+; (write-array (april "small←100 100 ↑ img"))
+; (write-array (april "small"))
+
 (write-animated-gif (april "img (0⌈255⌊result) (0⌈255⌊result1) (0⌈255⌊result2)")) ; clamp
+
 ;;;;;; line detection
-(april "img")
+
+(write-array (april "img"))
+
 (april "⎕←kernel←3 3 ⍴ ¯1 2 ¯1 ")
-(time (april "done←({0⌈255⌊+/,⍵×kernel}⌺ 3 3) img"))
+
+(april "done←({0⌈255⌊+/,⍵×kernel}⌺ 3 3) img ⋄ 0")
+
 (write-array (april "done"))
-;
+
 ;;;;;;;;;;;;;;;;;;;;
+
 (april "gaussBlur←{kernel←3 3 ⍴ 1 2 1 2 4 2 1 2 1
                    ({255⌊0⌈⌊(+/,kernel × ⍵)÷16}⌺ 3 3) ⍵
                   }")
+
 (april-f "gaussBlur 3 3 ⍴ ⍳9")
+
 ;;;;
 
 (read-png "images/twitter_photo1_sm.png")
+
 ; how many pixel values are greater than 50?
 (april "+/,img>50")
+
 ; how many pixel are there? 
+
 ; what percentage of pixel values are greater than 50? 
 (april "⌊100×(+/,img>50)÷×/⍴img")
 
 (april "⎕←kernelA←3 3 ⍴ ¯1 2 ¯1 ")
+
 (april "up←img×img>100")
+
 (april "r←({255⌊|+/+/kernelA×⍵}⌺3 3) gaussBlur up ⋄ 0")
+
 (april "r←({255⌊|+/+/kernelA×⍵}⌺3 3) img ⋄ 0")
+
 (write-animated-gif (april "img r"))
+
 (write-array (april "255⌊⌈3.0×r"))
+
 (write-array (april "r×(gaussBlur r)>50"))
+
 ;;;;
 ; https://web.archive.org/web/20121005005358/http://williamson-labs.com/convolution-2d.htm
 
 ; high pass mask
+
 (time (april "kern←3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9 
        r←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0"))
+
 (write-animated-gif (april "(img) (0⌈255⌊r)"))
+
 ; low pass filter
+
 (april-f "kern←3 3 ⍴ (4 ⍴ ÷16),(÷2)")
+
 (time (april "r←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0"))
+
 (write-array (april "⌊0⌈255⌊r"))
+
 (time (april "rr←{+/,kern × ⍵}⌺ 3 3 ⊢ r ⋄ 0"))
+
 (time (april "rrr←{+/,kern × ⍵}⌺ 3 3 ⊢ rr ⋄ 0"))
 
 (write-animated-gif (april "(img) (⌊0⌈255⌊r) (⌊0⌈255⌊rr) (⌊0⌈255⌊rrr)"))
 
 ;edge detector
+
 (april-f "kern←3 3 ⍴ ¯1 ¯1 ¯1 ¯1 8")
-(time (april "r_edge←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0"))
+
+(april "r_edge←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0")
+
 (write-array (april "⌊255⌊0⌈r_edge"))
+
 (write-array (april "(⊢×(200∘<)) (255⌊0⌈r)"))
+
 ;   ×⍨⍤50∘<  ⍵
 
 
 (april "{+/,(3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9) × ⍵}⌺ 3 3 ⊢ img")
+
 (april-f "3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9 ")
 
 ;;;;
@@ -599,9 +648,11 @@ document.body.appendChild (script);
 (write-array (april "⌽img"))
 
 (write-animated-gif (april "img (⌽img) (⊖img)"))
+
 (write-animated-gif (april "img (100⌽img)"))
+
 (write-animated-gif (april "img (100⌽img)"))
-(april-f "5 5 ⍴ ⍳ 25")
+
 
 (write-array (april "img,⌽img"))
 
@@ -610,82 +661,7 @@ document.body.appendChild (script);
 (write-array (april "{⍵,[1]⊖⍵} (¯230⌽img),230⌽⌽img"))
 ;;;;;;;;;
 
-(april "-⍤÷4")      ⍝ (  f⍤g y) ≡  f   g y
-(april "-∘÷4")      ⍝ (  f⍤g y) ≡  f   g y
-(april "-÷")
-¯0.25
-      12 -⍤÷ 4   ⍝ (x f⍤g y) ≡ (f x g y)
-¯3
-      3 1 4 1 5 ~⍤∊ 1 2 3
-0 0 1 0 1
 
-; ≠a / a
-(april "(≠(⊢⍤/)⊢) 1 2 3 3 2 4")
-(april "(≠⊢⍤/⊢) 1 2 3 3 2 4")
-
-; rank selects a trailing subset of axes.
-;   apply function on those cells
-
-; equiv
-(april-f "(⊖⍤1) 2 3 6 ⍴ ⍳72")
-(april-f "⌽ 2 3 6 ⍴ ⍳72")
-
-(april-f "(⊖⍤2) 2 3 6 ⍴ ⍳72")
-
-(april-f "3 6 ⍴ ⍳72")
-(april-f "(⊖⍤1) 2 3 6 ⍴ ⍳72")
-
-(april-f "  2 3 6 ⍴ ⍳72")
-(april-f "⊖ 2 3 6 ⍴ ⍳72")
-(april-f "⌽ 2 3 6 ⍴ ⍳72")
-
-(april-f "⌽ 2 3 ⍴ ⍳72")
-(april-f "⊖ 2 3 ⍴ ⍳72")
-
-(april-f "2 3⍴⍳100") ; r c
-(april-f "2 3 4⍴⍳100") ; v r c
-
-(april "size←10 ⋄ m← size size ⍴ ⍳size×size ⋄ 0")
-(april-f "⎕←m←3 3 4 ⍴ '33'")
-(april "(⌽m) ≡ (⊖⍤1)m")
-(time (april "⌽m "))
-(time (april "(⊖⍤1)m "))
-(april "6.024÷0.079")
-; 7.5E¯8
-(setf one (* 7.5 (expt 10 -8)))
-; 2.5E¯7
-(setf two (* 2.5 (expt 10 -7)))
-(- (* 100  (/ two one)) 100)
-(* one 2.33 )
-  0.079 seconds of real time
-  6.024 seconds of real time
-(- (* 100 (/ 6.024 0.079)) 100)
-(* 0.079  75.25316)
-
-(april-f "3 3 ⍴ ⍳16")
-(april "+⌿ 3 3 ⍴ ⍳16")
-(april "size←1000 ⋄ m← size size ⍴ ⍳size×size ⋄ 0")
-(sb-ext:gc :full t )
-(time (april "(+⌿⍤1) m ⋄ 0"))
-(time (april "+/ m ⋄ 0"))
-
-(april-f "(⊖⍤1) 2 3 ⍴ ⍳50")
-(april-f "⌽ 2 3 ⍴ ⍳50")
-(ql:quickload :flamegraph)
-(ql:system-apropos "flame")
-
-(flamegraph:save-flame-graph ("/mnt/reverse.flame")
-  (april "⌽m ⋄ 0"))
-
-(flamegraph:save-flame-graph ("/mnt/reverse_rank.flame")
-  (april "(⊖⍤1)m ⋄ 0"))
-
-(uiop:run-program "ls -la /mnt" :output t)
-
-(defun bob ()
-  (april:april ",m ⋄ 0"))
-
-(bob)
 
 ;;;;;;;;;;;;;;;
 
@@ -756,37 +732,7 @@ document.body.appendChild (script);
 ; TODO note that the wet bandits, after sobel, seem to have 
 ; extra information. jpeg artifacts?
 
-; edge detection
-
-(april "one← ¯1  0  1")
-(april "two← ¯2  0  2")
-(april "thr← ¯1  0  1")
-
-(april "⎕←kernel←3 3 ⍴ one,two,thr")
-
-(april-f "kernelsum←1⌈|⌊+/+/kernel") ; the sum's absolute value
-
-(april "⎕←g←⍉kernel")
-
-(april-f "pairs←,(¯1+⍳(¯2+(⍴m)[1]))∘.,¯1+⍳(¯2+(⍴m)[2])")
-(april "pairs[⍳10]")
-(april "¯1+⍳(¯2+(⍴m)[2])")
-
-(april "get_submats←{row←⍵[1]⋄col←⍵[2]⋄m[row+⍳3;col+⍳3]}")
-(april-f "m[50;50]")
-(april-f "get_submats 300 200")
-;; here
-(april-f "+/¨+/¨(⊂kernel)×sub_mats[1 2 3]")
-(april-f "      (⊂kernel)×sub_mats[1 2 3]")
-
-(flamegraph:save-flame-graph ("/mnt/mysobel.flame") 
-                             (april "sub_mats←get_submats¨pairs"))
-
-(april "Gx←(⊂kernel)×sub_mats") ; gradient in x
-(april "Gx[1]")
-
-(april "⍴m")
-(write-array (april "littlem←(250⊖200⌽m)[⍳10;⍳10]"))
+; y (april "littlem←(250⊖200⌽m)[⍳10;⍳10]"))
 (april "{+/+/kernel×⍵}⌺3 3⊢m")
 (april "{+/+/kernel×⍵}⌺3 3⊢m")
 (april "⍴m")
