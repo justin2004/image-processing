@@ -33,6 +33,24 @@
 (in-package :im)
 (load "utils.lisp")
 
+;;;;
+; BEGIN
+; - Errors will happen (do 1 first)
+; - Ask me to walk through
+; - user paper and pencil
+; - start with a small version of the problem
+; 
+; Where to learn about functions?
+; - e.g. if you want to learn about ⊂
+;   - Go to tryapl.org and type: ]help ⊂
+;;;;
+; END
+; - Use it regularly
+;   - Instead of using a calculator for math hw use APL 
+; - community? orchard.
+;;;;
+
+
 ; What is APL?
 ;
 ;   "A Programming Language"
@@ -47,7 +65,7 @@
 ; APLs (the versions)
 ; 
 ; Some APLs include:
-;   Dyalog, GNU APL, and April
+;   Dyalog APL, GNU APL, and April APL
 
 ; We are using April!
 
@@ -67,7 +85,7 @@
 ; I think about the -f as meaning "friendly"
 
 ; Image Representation
-(write-array (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
+(write-array (april-f "smile←200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
 
 ; Because images are represented as numbers we need some math to work with them
 
@@ -116,6 +134,7 @@ document.body.appendChild (script);
 ; after you execute (read-png) a greyscale copy of your image
 ; is in April as "img"
 
+
 ; let's look at the size of it now using ⍴
 (april "⍴ img")
 
@@ -129,7 +148,8 @@ document.body.appendChild (script);
 (april "img[1;]")
 
 
-; let's modify it
+; let's modify the image by only keeping pixel values
+; greater than 150
 (write-array (april "img × img>150"))
 
 
@@ -139,11 +159,23 @@ document.body.appendChild (script);
 ; We need to learn some words used in APL
 
 ; Scalar
-(april "1")
-
+(april "3")
 
 ; Vector
 (april "2 4 6 8")
+
+; Matrix a.k.a "array"  a.k.a "grid"
+
+(april-f "4 4 ⍴ 1 2 3" )
+; ⍴ is a greek letter 
+; pronounced "row" 
+; spelled "rho"
+; 4 4 reshape of 1 2 3
+; we need to spend some time with reshape
+
+(april  "⍴4 4 ⍴ 1 2 3" )
+
+(april "⍴⍴4 4 ⍴ 1 2 3" )
 
 
 ; Please Excuse My Dear Aunt Sally?
@@ -152,24 +184,26 @@ document.body.appendChild (script);
 ; 
 ; right to left
 ; and
-; the space between vectors are strong!
+; the space between vectors items are strong!
+;
+; you can use parentheses to force an order
+; 
 
 ; Dimensions, Rank, Shape
 
-(april "⍴1")
+(april "⍴ 3")
+
+(april "⍴3")
+
+(april "⍴ 2 4 6 8")
 
 (april "⍴2 4 6 8")
+
+(april "(⍴ 2 4) 6 8")
 
 (april "⍴⍴ 2 4 6 8")
 
 
-; Matrix a.k.a "array"  a.k.a "grid"
-
-(april-f "4 4 ⍴ 1 2 3" )
-
-(april  "⍴4 4 ⍴ 1 2 3" )
-
-(april "⍴⍴4 4 ⍴ 1 2 3" )
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -206,12 +240,19 @@ document.body.appendChild (script);
 (april "÷ 9")
 ; mon-  mono-
 ; : one : single : alone 
+;
+; monadic functions take a single operand
 
 ; Dyadic Function
 
 (april "4 + 6")
 ; dyad
 ; : pair
+;
+; dyadic functions take two operands
+
+
+; You might hear me use these terms:
 
 ; Nested
 
@@ -230,6 +271,7 @@ document.body.appendChild (script);
 
 (april "sam")
 
+; what do you think this will do?
 (april "sam ÷ 2")
 
 ; ⍳  iota
@@ -249,37 +291,62 @@ document.body.appendChild (script);
 
 
 
-; assign to v this vector
-(april "v←0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 168 168 168 168 168 168 168 0 0 0 0 0 0 0 0 0 0 0 168 168 168 168 168 168 168 168 168 168 168 0 0 0 0 0 0 0 0 168 168 168 168 168 168 168 168 168 168 168 168 168 0 0 0 0 0 0 168 168 168 168 0 0 168 168 168 82 0 168 168 168 168 0 0 0 0 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 0 0 2 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 0 0 168 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 168 0 168 168 168 168 168 168 0 0 168 168 168 0 0 168 168 168 168 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 86 168 168 168 168 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 168 168 168 168 152 168 168 0 168 168 0 168 168 168 168 168 168 168 168 168 168 168 168 168 0 168 168 0 168 168 153 168 168 168 168 168 168 168 168 168 168 168 168 168 152 168 168 0 168 168 168 151 168 168 168 168 168 168 168 168 168 168 168 0 168 168 168 0 0 168 168 0 168 168 168 168 168 168 168 168 168 168 168 144 168 168 0 0 93 168 168 168 0 168 168 168 168 168 168 168 168 168 0 168 168 168 88 0 145 0 168 168 168 142 0 168 168 168 168 168 0 168 168 168 168 168 142 0 168 0 0 168 168 168 168 168 4 0 9 168 168 168 168 168 0 34 168 0 150 121 40 0 168 168 168 168 168 168 168 168 168 168 168 168 37 0 150 0 0 168 168 53 168 0 168 168 168 168 168 168 168 0 168 0 168 157 0")
-
-; assign to m the 20 20 reshape of v
-(april "m←20 20 ⍴ v")
-
-(april-f "m")
-
-(write-array (april "m"))
-
-
 ; ⍉
 ; Transpose
 
-(april "⎕←twenty_five_square←5 5 ⍴ ⍳25")
+(april "twenty_five_square←5 5 ⍴ ⍳25")
 
 (april-f "twenty_five_square")
 
 (april-f "⍉twenty_five_square")
 
-(write-array (april "⍉m"))
+(write-array (april "smile"))
+
+(write-array (april "⍉smile"))
 
 ; let's transpose the image of sia
 (write-array (april "⍉img"))
 
-(write-array (april "⍉⍉m"))
+(write-array (april "⍉⍉smile"))
 
 ; ,  comma
 ; catenate
 
-(april "20 30 40,sam")
+(april "20 30 40 , sam")
+
+(april "20 30 40 sam")
+
+;;;;;;;;;;;;;;;;;;;;
+
+; make a mask
+(write-array (april "img"))
+(write-array (april "mask←img<20"))
+(write-array (april "mask×255"))
+; blur the result?
+(april-f "⊢kernel←3 3 ⍴ 0 ¯1 0 ¯1 5 ¯1 0 ¯1 0")
+(april "res←{(+/÷≢),⍵}⌺3 3⊢mask×255")
+(april "boxBlur←{(⌊+/÷≢),⍵}⌺3 3")
+(write-array (april "res"))
+(april "(+/÷≢),3 3 ⍴ ⍳9")
+(april "'APPLE'∊13↑⎕a")
+(write-array (april "{0⌈255⌊+/,kernel×⍵}⌺3 3⊢⌊res"))
+
+(write-array (april "boxBlur img"))
+
+(write-array (april "one←mask×?(⍴img) ⍴ 255"))
+(write-array (april "two←mask×?(⍴img) ⍴ 255"))
+(write-animated-gif (april "img one two"))
+;;;;;;;
+
+(read-png "images/Dua_Lipa.png")
+(write-array (april "img"))
+(april "masks←(⊂img)<20 40 60 40")
+(april "masks←(⊂img)<20 40 60 100 150 200 255")
+(write-animated-gif (april "masks×⊂img"))
+(write-array (april "255×neon_mask←170<img"))
+(write-array (april "255⌊img+neon_mask×255"))
+; (april-f "4 5 6 (,⍤1 0) 3 3 ⍴ ⍳9")
+; (april-f "4 5 6 , 3 3 ⍴ ⍳9")
 
 ;;;;;;;;;;;;;;;;;;;;;
 
@@ -289,10 +356,10 @@ document.body.appendChild (script);
 (april "b←?100 50 ⍴ 50")
 (april "c←?100 50 ⍴ 100")
 (april "d←?100 50 ⍴ 255")
-(april-f "a")
-(april-f "a,b")
-(april-f "⍉a")
-(april "ac←⍉a,b,c,d")
+; (april-f "a")
+; (april-f "a,b")
+; (april-f "⍉a")
+(april "aa←⍉a,b,c,d")
 
 (write-animated-gif (april "aa ab ac"))
 
@@ -315,6 +382,124 @@ document.body.appendChild (script);
 
 
 ;;;;;;;;;;;;;;;;;;;;
+(april-f "⎕←m←4 4 ⍴ ⍳25")
+(april-f "+/+/m")
+(april-f "({⍵}⌺ 3 3) m")
+(april "⎕←kernel←3 3 ⍴ 0 ¯1 0 ¯1 5 ¯1 0 ¯1 0")
+(april-f "({+/+/⍵}⌺ 3 3) m") ; adding up all cells in the matrix
+(write-array (april-f "255⌊({+/+/⍵}⌺ 3 3) img")) ; adding up all cells in the matrix
+(april-f "result←({+/+/kernel×⍵}⌺ 3 3) img ⋄ 0"); sharpen kernel
+(write-array (april "0⌈255⌊result"))
+(april-f "result1←({+/+/kernel×⍵}⌺ 3 3) (225⌊result) ⋄ 0"); sharpen kernel
+(april-f "result2←({+/+/kernel×⍵}⌺ 3 3) (225⌊result1) ⋄ 0"); sharpen kernel
+(april-f "result3←({+/+/kernel×⍵}⌺ 3 3) (225⌊result2) ⋄ 0"); sharpen kernel
+(write-array (april "0⌈255⌊result3"))
+(write-array (april "small←100 100 ↑ img"))
+(write-array (april "small"))
+(write-animated-gif (april "img (0⌈255⌊result) (0⌈255⌊result1) (0⌈255⌊result2)")) ; clamp
+;;;;;; line detection
+(april "img")
+(april "⎕←kernel←3 3 ⍴ ¯1 2 ¯1 ")
+(time (april "done←({0⌈255⌊+/,⍵×kernel}⌺ 3 3) img"))
+(write-array (april "done"))
+;
+;;;;;;;;;;;;;;;;;;;;
+(april "gaussBlur←{kernel←3 3 ⍴ 1 2 1 2 4 2 1 2 1
+                   ({255⌊0⌈⌊(+/,kernel × ⍵)÷16}⌺ 3 3) ⍵
+                  }")
+(april-f "gaussBlur 3 3 ⍴ ⍳9")
+;;;;
+
+(read-png "images/twitter_photo1_sm.png")
+; how many pixel values are greater than 50?
+(april "+/,img>50")
+; how many pixel are there? 
+; what percentage of pixel values are greater than 50? 
+(april "⌊100×(+/,img>50)÷×/⍴img")
+
+(april "⎕←kernelA←3 3 ⍴ ¯1 2 ¯1 ")
+(april "up←img×img>100")
+(april "r←({255⌊|+/+/kernelA×⍵}⌺3 3) gaussBlur up ⋄ 0")
+(april "r←({255⌊|+/+/kernelA×⍵}⌺3 3) img ⋄ 0")
+(write-animated-gif (april "img r"))
+(write-array (april "255⌊⌈3.0×r"))
+(write-array (april "r×(gaussBlur r)>50"))
+;;;;
+; https://web.archive.org/web/20121005005358/http://williamson-labs.com/convolution-2d.htm
+
+; high pass mask
+(time (april "kern←3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9 
+       r←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0"))
+(write-animated-gif (april "(img) (0⌈255⌊r)"))
+; low pass filter
+(april-f "kern←3 3 ⍴ (4 ⍴ ÷16),(÷2)")
+(time (april "r←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0"))
+(write-array (april "⌊0⌈255⌊r"))
+(time (april "rr←{+/,kern × ⍵}⌺ 3 3 ⊢ r ⋄ 0"))
+(time (april "rrr←{+/,kern × ⍵}⌺ 3 3 ⊢ rr ⋄ 0"))
+
+(write-animated-gif (april "(img) (⌊0⌈255⌊r) (⌊0⌈255⌊rr) (⌊0⌈255⌊rrr)"))
+
+;edge detector
+(april-f "kern←3 3 ⍴ ¯1 ¯1 ¯1 ¯1 8")
+(time (april "r_edge←{+/,kern × ⍵}⌺ 3 3 ⊢ img ⋄ 0"))
+(write-array (april "⌊255⌊0⌈r_edge"))
+(write-array (april "(⊢×(200∘<)) (255⌊0⌈r)"))
+;   ×⍨⍤50∘<  ⍵
+
+
+(april "{+/,(3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9) × ⍵}⌺ 3 3 ⊢ img")
+(april-f "3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9 ")
+
+;;;;
+;
+(april-f "kernelB←⍉kernelA")
+(april-f "kernelC←¯1 0 1⌽kernelA")
+(april-f "kernelD←⌽¯1 0 1⌽kernelA")
+;
+(april "img←?3 3 ⍴ 255")
+(april-f "({+/+/⍵}⌺3 3) img")
+(april-f "kernelA kernelB kernelC kernelD × ⊂img")
+(april-f "255⌊|+/¨+/¨kernelA kernelB kernelC kernelD × ⊂img")
+; (april-f "⍴({255⌊|+/¨+/¨kernelA kernelB kernelC kernelD × ⊂⍵}⌺3 3) img")
+(april-f "({+/+/¨kernelA kernelB kernelC kernelD × ⊂⍵}⌺3 3) img")
+(april-f "({kernelA kernelB kernelC kernelD × ⊂⍵}⌺3 3) img")
+(april-f "({kernelA kernelB × ⊂⍵}⌺3 3) img")
+(april-f "({kernelA kernelB (⊣×⊂⍤⊢) ⍵}⌺3 3) img")
+;              ⍺×⊂⍵
+; ⍺ ( gh)⍵→   g(⍺h⍵)  ⍝ dyadic  atop)
+; ⍺ (fgh)⍵→  (⍺f⍵) g(⍺h⍵)  ⍝ dyadic  fgh fork)
+(april "2 3 (⊣×⊂⍤⊢) 4 5")
+(april "2 3 ×∘⊂ 4 5")
+(april "2 3 (⊣(+/×)⊂⍤⊢) 4 5")
+(april "2 3 ⊂⍤⊢ 4 5")
+(april "2 3 (⊂⊢) 4 5")
+(april-f "({+/+/kernelA × ⍵}⌺3 3) img")
+(format t "~@r~%" 123)
+(format t "~r~%" 123)
+(april-f "m←2 3 3 ⍴ ⍳ 18")
+(april-f "(1⌷m) (2⌷m)")
+(april "count←⊃⍴m")
+(april "≢ 8 3 3 ⍴ 0")
+(april-f "(⍳≢) ∘.⌷ ⊂m ")
+;      (∘.⌷∘⊂)
+(april-f "(⍳∘≢(∘.⌷)⊂) m")
+(april-f "(⍳∘≢∘.⌷⊂) m")
+
+(april-f "⊃1 1 ↑'(÷' '(-' ∘., 1 2 3 ∘., ')'")
+; (fgh)⍵→   ( f⍵) g( h⍵)  ⍝ monadic fgh fork)
+(april "(-,[0.5]÷) 1 2 3")
+(april "'(÷',' 1)'")
+(april "'(÷ 1) (÷ 2)'")
+(april "img←?2 2 ⍴ 255 ")
+(time (april "result←({+/+/⍵×kernel}⌺3 3) img"))
+(write-array (april "255⌊|result"))
+(april "")
+
+(write-array (april "255×img<155"))
+;;;;;;;;;;;;;;
+
+
 
 
 ; ⎕
@@ -401,7 +586,84 @@ document.body.appendChild (script);
 (write-array (april "{⍵,[1]⊖⍵}img,⌽img"))
 
 (write-array (april "{⍵,[1]⊖⍵} (¯230⌽img),230⌽⌽img"))
+;;;;;;;;;
 
+(april "-⍤÷4")      ⍝ (  f⍤g y) ≡  f   g y
+(april "-∘÷4")      ⍝ (  f⍤g y) ≡  f   g y
+(april "-÷")
+¯0.25
+      12 -⍤÷ 4   ⍝ (x f⍤g y) ≡ (f x g y)
+¯3
+      3 1 4 1 5 ~⍤∊ 1 2 3
+0 0 1 0 1
+
+; ≠a / a
+(april "(≠(⊢⍤/)⊢) 1 2 3 3 2 4")
+(april "(≠⊢⍤/⊢) 1 2 3 3 2 4")
+
+; rank selects a trailing subset of axes.
+;   apply function on those cells
+
+; equiv
+(april-f "(⊖⍤1) 2 3 6 ⍴ ⍳72")
+(april-f "⌽ 2 3 6 ⍴ ⍳72")
+
+(april-f "(⊖⍤2) 2 3 6 ⍴ ⍳72")
+
+(april-f "3 6 ⍴ ⍳72")
+(april-f "(⊖⍤1) 2 3 6 ⍴ ⍳72")
+
+(april-f "  2 3 6 ⍴ ⍳72")
+(april-f "⊖ 2 3 6 ⍴ ⍳72")
+(april-f "⌽ 2 3 6 ⍴ ⍳72")
+
+(april-f "⌽ 2 3 ⍴ ⍳72")
+(april-f "⊖ 2 3 ⍴ ⍳72")
+
+(april-f "2 3⍴⍳100") ; r c
+(april-f "2 3 4⍴⍳100") ; v r c
+
+(april "size←10 ⋄ m← size size ⍴ ⍳size×size ⋄ 0")
+(april-f "⎕←m←3 3 4 ⍴ '33'")
+(april "(⌽m) ≡ (⊖⍤1)m")
+(time (april "⌽m "))
+(time (april "(⊖⍤1)m "))
+(april "6.024÷0.079")
+; 7.5E¯8
+(setf one (* 7.5 (expt 10 -8)))
+; 2.5E¯7
+(setf two (* 2.5 (expt 10 -7)))
+(- (* 100  (/ two one)) 100)
+(* one 2.33 )
+  0.079 seconds of real time
+  6.024 seconds of real time
+(- (* 100 (/ 6.024 0.079)) 100)
+(* 0.079  75.25316)
+
+(april-f "3 3 ⍴ ⍳16")
+(april "+⌿ 3 3 ⍴ ⍳16")
+(april "size←1000 ⋄ m← size size ⍴ ⍳size×size ⋄ 0")
+(sb-ext:gc :full t )
+(time (april "(+⌿⍤1) m ⋄ 0"))
+(time (april "+/ m ⋄ 0"))
+
+(april-f "(⊖⍤1) 2 3 ⍴ ⍳50")
+(april-f "⌽ 2 3 ⍴ ⍳50")
+(ql:quickload :flamegraph)
+(ql:system-apropos "flame")
+
+(flamegraph:save-flame-graph ("/mnt/reverse.flame")
+  (april "⌽m ⋄ 0"))
+
+(flamegraph:save-flame-graph ("/mnt/reverse_rank.flame")
+  (april "(⊖⍤1)m ⋄ 0"))
+
+(uiop:run-program "ls -la /mnt" :output t)
+
+(defun bob ()
+  (april:april ",m ⋄ 0"))
+
+(bob)
 
 ;;;;;;;;;;;;;;;
 
@@ -433,8 +695,27 @@ document.body.appendChild (script);
 ;;;
 (april "m")
 ;;;;;;;;;;;
+
+; ⌸ key
+(april-f "res←{⍺ (≢⍵)}⌸ ,img")
+(april-f "⎕←res[⍒res[;2];]⋄0")
+(write-array (april "sr←img[⍋img[1;]]"))
+(write-array (april "img[⍋img[1;]] ,[1] ¯299↑img"))
+(write-array (april "↑⍋¨↓img[⍳10;] ,[1] ¯290↑img")) ; what is this?
+(write-array (april "↑⍋¨↓img[⍳10;]"))
+(write-array (april "img[⍳2;]"))
+(april-f "target←2 2 ⍴ ⍳4")
+(april "rearr←2 2 ⍴ 2 1 2 1")
+(april-f "target[rearr]")
+
+(write-array (april "↑⍋¨↓img[⍳2;]"))
+(april "img[1 2;]")
+(april "⍴img")
+(april-f "0 11 22 ,[1] 3 3 ⍴ ⍳ 9")
+
 (progn
-  (april "m←img")
+  ; (april "m←img")
+  (april "m←smile")
   ; (april "m←⌊(+/img)÷¯1↑⍴img")
   (april "res←{⍺,≢⍵} ⌸ ,m")
   (april-f "sorted←res[⍋⌽res;]")
@@ -572,3 +853,36 @@ document.body.appendChild (script);
 
 (type-of (april::array-to-list *sia*))
 (type-of *sia*)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(april "⍴(⍳2)∘.× ⍬ ∘.× (⍳4)")
+(april "⍴+⌿(⍳2)∘.× ⍬ ∘.× (⍳4)")
+(april "+⌿+⌿(⍳2)∘.× ⍬ ∘.× (⍳4)")
+(april "a←(⍳2)∘.× ⍬ ∘.× (⍳4)")
+(setf aa (april "a"))
+(april-c "{⍴⍵}" aa)
+(type-of aa)
+(april "⍬≡1↓'a'")
+(april "⍬≡''")
+
+(april "⍬∘., 1 2 3")
+
+(type-of (april "⍬ ∘.× (⍳4)"))
+(type-of (april "(⍳2)∘.× ⍬ ∘.× (⍳4)"))
+(type-of (april "+⌿(⍳2)∘.× ⍬ ∘.× (⍳4)"))
+(april-f "⍳2 3")
+
+(april "⍬≡1↓'apple'")
+(april "⍬≡1↓1↑4↓1↓'apple'")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(uiop:run-program "ls -la /home/containeruser/quicklisp" :output t )
+(load "/home/containeruser/quicklisp/local-projects/april/demos/ncurses/loader.lisp")
+(load "/home/containeruser/quicklisp/local-projects/april/demos/ncurses/loader.lisp")
+(ql:quickload "croatoan")
+
+(april-f "+/3 2 ⍴ 1 2 3 (⊂4 5)")
+
+(april "2 ,⍥÷ 5")
+(april "5⍨ 2 6")
+(april "7 (5⍨) 2 6")
+(april "(×/÷⊢) 1 2 3 4 5")
