@@ -8,21 +8,28 @@
 (defun read-png (path)
   "converts to greyscale and sets img in april"
   (progn
-    (april (with (:state 
+    (april (with (:store-fun 
+                   (forcesmall (function force-small))) 
+                 (:state 
                    :in 
                    ((img_in (opticl:read-png-file path)))))
-           "img←⌊(+/img_in)÷¯1↑⍴img_in")
+           "img←forcesmall⌊(+/img_in)÷¯1↑⍴img_in")
     (write-array (april "img") )))
 
-(defun write-array (a)
-  "right now it forces a resize to width 300 "
+(defun force-small (a)
+  "forces a resize to width 300"
   (let* ((dims (april-c "{⌊(⍴⍵)×300.0÷1↑⍴⍵}" a))
-       (rows (svref dims 0))
-       (cols (svref dims 1)))
-  (write-array-as-png (opticl:resize-image
-                        a
-                        rows
-                        cols))))
+         (rows (svref dims 0))
+         (cols (svref dims 1)))
+    (opticl:resize-image
+      a
+      rows
+      cols)))
+
+
+(defun write-array (a)
+  "write the array as a png"
+  (write-array-as-png (force-small a)))
 
 
 
