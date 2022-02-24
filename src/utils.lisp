@@ -13,8 +13,11 @@
                  (:state 
                    :in 
                    ((img_in (opticl:read-png-file path)))))
-           "img←forcesmall⌊(+/img_in)÷¯1↑⍴img_in")
+           "img←forcesmall⌊(+/img_in)÷¯1↑⍴img_in"
+                        ; "img←forcesmall ⌊{(+/÷⊃⍤¯1⍤↑)(3↑(⍴⍵),1)⍴⍵} img_in"
+           )
     (write-array (april "img") )))
+
 
 (defun force-small (a)
   "forces a resize to width 300"
@@ -92,4 +95,5 @@
       (skippy:add-color (skippy:rgb-color i i i)
                         color-table))
     (setf (skippy:loopingp data-stream) t)
-    (skippy:output-data-stream data-stream #p"example3.gif")))
+    (skippy:output-data-stream data-stream #p"example3.gif")
+    (funcall *look-at-image* #"example3.gif")))

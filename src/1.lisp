@@ -35,9 +35,10 @@
 
 ;;;;
 ; BEGIN
-; - Errors will happen (do 1 first)
+; - Goals
+; - Errors will happen (show some)
 ; - Ask me to walk through
-; - user paper and pencil
+; - use paper and pencil
 ; - start with a small version of the problem
 ; 
 ; Where to learn about functions?
@@ -85,7 +86,9 @@
 ; I think about the -f as meaning "friendly"
 
 ; Image Representation
-(write-array (april-f "smile←200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
+(write-array (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
+
+(april "smile←200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0")
 
 ; Because images are represented as numbers we need some math to work with them
 
@@ -140,9 +143,9 @@ document.body.appendChild (script);
 
 
 ; let's look at a single pixel
-(april "img[200;200]")
+(april "img[200;230]")
 ; the 200th row
-; the 200th column
+; the 230th column
 
 ; let's look at one row of pixels
 (april "img[1;]")
@@ -150,7 +153,7 @@ document.body.appendChild (script);
 
 ; let's modify the image by only keeping pixel values
 ; greater than 150
-(write-array (april "img × img>150"))
+(write-array (april "img × img > 150"))
 
 
 
@@ -167,15 +170,28 @@ document.body.appendChild (script);
 ; Matrix a.k.a "array"  a.k.a "grid"
 
 (april-f "4 4 ⍴ 1 2 3" )
-; ⍴ is a greek letter 
-; pronounced "row" 
-; spelled "rho"
-; 4 4 reshape of 1 2 3
-; we need to spend some time with reshape
 
-(april  "⍴4 4 ⍴ 1 2 3" )
+; Function and Operands:
+(april "8 - 3")
+; - is the function
+; 8 is the function's left operand
+; 3 is the function's right operand
 
-(april "⍴⍴4 4 ⍴ 1 2 3" )
+; Monadic Function
+
+(april "÷ 9")
+; mon-  mono-
+; : one : single : alone 
+;
+; monadic functions take a single operand
+
+; Dyadic Function
+
+(april "4 + 6")
+; dyad
+; : pair
+;
+; dyadic functions take two operands
 
 
 ; Please Excuse My Dear Aunt Sally?
@@ -189,8 +205,41 @@ document.body.appendChild (script);
 ; you can use parentheses to force an order
 ; 
 
+; right to left
+(april "10 ÷ 2 + 3")
+
+; parens force order
+(april "(10 ÷ 2) + 3")
+
+; the space between vectors items are strong
+(april "10 + 1 2 3")
+
+(april-f "(10 + 1 2) 3")
+
+
+
+; ⍴ is a greek letter 
+; pronounced "row" 
+; spelled "rho"
+;
+; dyadic  ⍴ is the "reshape" function
+; monadic ⍴ is the "shape"   function
+
+
+; "what is the shape of the 4 4 reshape of 1 2 3"
+(april  "⍴4 4 ⍴ 1 2 3" )
+
+; "what is the shape of the shape of the 4 4 reshape of 1 2 3"
+(april "⍴⍴4 4 ⍴ 1 2 3" )
+
+; we need to spend some time with the reshape function
+;   let's do it a little later
+
+
+
 ; Dimensions, Rank, Shape
 
+; spaces don't matter between functions and their operands
 (april "⍴ 3")
 
 (april "⍴3")
@@ -227,29 +276,9 @@ document.body.appendChild (script);
 ; a 10 by 10 pixel image with random pixel values
 (write-array (april "?10 10 ⍴ 255"))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; Function and Operands:
-(april "8 - 3")
-; - is the function
-; 8 is the function's left operand
-; 3 is the function's right operand
-
-; Monadic Function
-
-(april "÷ 9")
-; mon-  mono-
-; : one : single : alone 
-;
-; monadic functions take a single operand
-
-; Dyadic Function
-
-(april "4 + 6")
-; dyad
-; : pair
-;
-; dyadic functions take two operands
 
 
 ; You might hear me use these terms:
@@ -310,35 +339,31 @@ document.body.appendChild (script);
 (write-array (april "⍉⍉smile"))
 
 ; ,  comma
-; catenate
+; dyadic , is the catenate function
+; monadic , is the ravel function
 
 (april "20 30 40 , sam")
 
 (april "20 30 40 sam")
 
+(april ", smile")
+
 ;;;;;;;;;;;;;;;;;;;;
 
-; make a mask
+; let's make a mask
 (write-array (april "img"))
 (write-array (april "mask←img<20"))
 (write-array (april "mask×255"))
-; blur the result?
-(april-f "⊢kernel←3 3 ⍴ 0 ¯1 0 ¯1 5 ¯1 0 ¯1 0")
-(april "res←{(+/÷≢),⍵}⌺3 3⊢mask×255")
-(april "boxBlur←{(⌊+/÷≢),⍵}⌺3 3")
-(write-array (april "res"))
-(april "(+/÷≢),3 3 ⍴ ⍳9")
-(april "'APPLE'∊13↑⎕a")
-(write-array (april "{0⌈255⌊+/,kernel×⍵}⌺3 3⊢⌊res"))
 
-(write-array (april "boxBlur img"))
-
+; and use the mask
 (write-array (april "one←mask×?(⍴img) ⍴ 255"))
 (write-array (april "two←mask×?(⍴img) ⍴ 255"))
 (write-animated-gif (april "img one two"))
+
 ;;;;;;;
 
 (read-png "images/Dua_Lipa.png")
+(read-png "images/Columbus-Skyline.png")
 (write-array (april "img"))
 (april "masks←(⊂img)<20 40 60 40")
 (april "masks←(⊂img)<20 40 60 100 150 200 255")
@@ -348,40 +373,37 @@ document.body.appendChild (script);
 ; (april-f "4 5 6 (,⍤1 0) 3 3 ⍴ ⍳9")
 ; (april-f "4 5 6 , 3 3 ⍴ ⍳9")
 
+
 ;;;;;;;;;;;;;;;;;;;;;
 
 ; let's generate an image more programmatically
+
+; TODO
 
 (april "a←?100 50 ⍴ 10")
 (april "b←?100 50 ⍴ 50")
 (april "c←?100 50 ⍴ 100")
 (april "d←?100 50 ⍴ 255")
-; (april-f "a")
-; (april-f "a,b")
-; (april-f "⍉a")
 (april "aa←⍉a,b,c,d")
 
 (write-animated-gif (april "aa ab ac"))
 
 
-(april "rv←255×¯1+?10⍴2")
-(write-array (april "12 11 ⍴ rv"))
+;;;;;;;;;;;;;;;;;;;;
 
-(april "rvfP←{$[0≡⊂⍵ ;
-                ⊂255×¯1+?⍺⍴2 ;
-                ⍵, ⊂255×¯1+?⍺⍴2 ]
-             }")
-(april "10 rvfP 0")
-(write-animated-gif (april "{200 211 ⍴ ⍵}¨(10∘rvfP⍣20) 0"))
+; function definition
+; {}
 
+(april "15 {⍺+⍵} 10 20 30")
 
-(write-array (april "rv←255×¯1+?10⍴2 ⋄ 11 11 ⍴ rv"))
-(april "rvf⍣2 1")
+(april "15 {⍺<⍵} 10 20 30")
 
-(april "20 20∘⍴⊃ 20 rvfP 0" )
 
 
 ;;;;;;;;;;;;;;;;;;;;
+
+; convolution kernels
+
 (april-f "⎕←m←4 4 ⍴ ⍳25")
 (april-f "+/+/m")
 (april-f "({⍵}⌺ 3 3) m")
@@ -886,3 +908,17 @@ document.body.appendChild (script);
 (april "5⍨ 2 6")
 (april "7 (5⍨) 2 6")
 (april "(×/÷⊢) 1 2 3 4 5")
+
+
+
+
+; blur the result?
+(april-f "⊢kernel←3 3 ⍴ 0 ¯1 0 ¯1 5 ¯1 0 ¯1 0")
+(april "res←{(+/÷≢),⍵}⌺3 3⊢mask×255")
+(april "boxBlur←{(⌊+/÷≢),⍵}⌺3 3")
+(write-array (april "res"))
+(april "(+/÷≢),3 3 ⍴ ⍳9")
+(april "'APPLE'∊13↑⎕a")
+(write-array (april "{0⌈255⌊+/,kernel×⍵}⌺3 3⊢⌊res"))
+
+(write-array (april "boxBlur img"))
