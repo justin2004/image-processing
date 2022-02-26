@@ -11,9 +11,10 @@
 
 ; What can you do in a Jupyter notebook?
 ; 
-; - look at code and the results of running the code
+; - look at code
 ; - edit the code
 ; - run the code
+; - look at the results of running the code
 
 ; Because it is a computational notebook things are not hidden from you
 ;
@@ -32,24 +33,34 @@
   (:use :common-lisp :april :opticl :drakma :alexandria))
 (in-package :im)
 (load "utils.lisp")
+; you have to run this cell in order to use April
 
-;;;;
-; BEGIN
-; - Goals
-; - Errors will happen (show some)
-; - Ask me to walk through
-; - use paper and pencil
-; - start with a small version of the problem
+
+; - Goals for this class
+;
+; - Errors will happen often
+;
+; - Ask me to walk through things
+;
+; - Use paper and pencil
+;
+; - Start with a small version of the problem
 ; 
-; Where to learn about functions?
-; - e.g. if you want to learn about ⊂
-;   - Go to tryapl.org and type: ]help ⊂
-;;;;
-; END
-; - Use it regularly
-;   - Instead of using a calculator for math hw use APL 
-; - community? orchard.
-;;;;
+; - Make changes in the notebook!
+;   - Add cells and change existing cells
+;
+; - Learning
+;   - if you want to learn about, for example, ⊂
+;     go to tryapl.org and type: ]help ⊂
+;   - Dyalog APL Tutor
+;     - https://tutorial.dyalog.com/
+;
+; - Use APL regularly
+;   - Instead of using a calculator for math homework use APL!
+;
+; - Ask questions and discuss
+;   - The APL Orchard is a friendly place ask questions about APL 
+;     - https://apl.chat/
 
 
 ; What is APL?
@@ -73,7 +84,8 @@
 ; You can try Dyalog here: 
 ; https://tryapl.org/
 
-; You can edit images with APL among many other things
+; APL is a general purpose programming langauge but it happens to be
+; really good at working with images
 
 ; What are images?
  
@@ -83,7 +95,7 @@
 ; ...about April
 ; notice the -f
 ;
-; I think about the -f as meaning "friendly"
+; think about the -f as meaning "friendly" output
 
 ; Image Representation
 (write-array (april-f "200 × 5 6 ⍴ 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0"))
@@ -124,6 +136,8 @@ document.body.appendChild (script);
 ; 255 is white
 ; 
 ; What number represents gray?
+;
+; This is called "greyscale"
 
 
 ; What is a pixel?
@@ -202,7 +216,7 @@ document.body.appendChild (script);
 ; and
 ; the space between vectors items are strong!
 ;
-; you can use parentheses to force an order
+; but you can use parentheses to force an order
 ; 
 
 ; right to left
@@ -214,7 +228,8 @@ document.body.appendChild (script);
 ; the space between vectors items are strong
 (april "10 + 1 2 3")
 
-(april-f "(10 + 1 2) 3")
+(april "(10 + 1) 2 3")
+
 
 
 
@@ -255,7 +270,6 @@ document.body.appendChild (script);
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Let's generate some random images
 
@@ -277,7 +291,6 @@ document.body.appendChild (script);
 (write-array (april "?10 10 ⍴ 255"))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -294,20 +307,22 @@ document.body.appendChild (script);
 ; Functions and Operators
 
 ; ←
-; assignment
+; assignment function
 
-(april "sam←50 100 200")
+(april "sam ← 50 100 200")
 
 (april "sam")
 
 ; what do you think this will do?
 (april "sam ÷ 2")
 
-; ⍳  iota
+; ⍳ "iota"
+; index generator function
 
 (april "⍳9")
 
-; ⍴  rho
+; ⍴  "rho"
+; shape of function
 ; monadic ⍴ tells you the shape of something
 
 (april "⍴ 2 4 6 8 10")
@@ -319,24 +334,26 @@ document.body.appendChild (script);
 ; Read as: "15 reshape sam" makes a vector 15 items long using sam
 
 
+; ≢
+; tally function
+
+; Let's look it up 
+; go to tryapl.org and type: ]help ≢
+
+
 
 ; ⍉
-; Transpose
+; Transpose function
 
-(april "twenty_five_square←5 5 ⍴ ⍳25")
+(april "twenty_five_square ← 5 5 ⍴ ⍳ 25")
 
-(april-f "twenty_five_square")
-
-(april-f "⍉twenty_five_square")
-
-(write-array (april "smile"))
-
-(write-array (april "⍉smile"))
+(april-f "⍉ twenty_five_square")
 
 ; let's transpose the image of sia
-(write-array (april "⍉img"))
+(write-array (april "⍉ img"))
 
-(write-array (april "⍉⍉smile"))
+; transpose two times?
+
 
 ; ,  comma
 ; dyadic , is the catenate function
@@ -348,53 +365,47 @@ document.body.appendChild (script);
 
 (april ", smile")
 
-;;;;;;;;;;;;;;;;;;;;
+
 
 ; let's make a mask
 (write-array (april "img"))
 
-(write-array (april "mask←img<20"))
+(write-array (april "mask ← img < 20"))
 
-(write-array (april "mask×255"))
+(write-array (april "mask × 255"))
 
 ; and use the mask
-(write-array (april "one←mask×?(⍴img) ⍴ 255"))
+(write-array (april "one ← mask × ?(⍴img) ⍴ 255"))
 
-(write-array (april "two←mask×?(⍴img) ⍴ 255"))
+(write-array (april "two ← mask × ?(⍴img) ⍴ 255"))
 
 (write-animated-gif (april "img one two"))
 
-;;;;;;;
+
+; animation with masks
 
 (read-png "images/Dua_Lipa.png")
 
 (read-png "images/Columbus-Skyline.png")
 
+(read-png "images/sia.png")
+
 (write-array (april "img"))
 
-(april "masks←(⊂img)<20 40 60 40")
+(april "masks ← ( ⊂ img ) < 20 40 60 40")
 
-(april "masks←(⊂img)<20 40 60 100 150 200 255")
+(april "numberSteps ← 20")
 
-(write-animated-gif (april "masks×⊂img"))
+(april "stepSize ← ⌈ 255 ÷ numberSteps")
 
+(april "stepSequence ← ⌽ stepSize × ⍳ numberSteps")
 
-;;;;;;;;;;;;;;;;;;;;;
+(april "masks ← ( ⊂ img ) < stepSequence ")
 
-; let's generate an image more programmatically
-
-; TODO
-
-(april "a←?100 50 ⍴ 10")
-(april "b←?100 50 ⍴ 50")
-(april "c←?100 50 ⍴ 100")
-(april "d←?100 50 ⍴ 255")
-(april "aa←⍉a,b,c,d")
-
-(write-animated-gif (april "aa ab ac"))
+(write-animated-gif (april "masks × ⊂ img"))
+; try to delete the ⊂ in this cell 
 
 
-;;;;;;;;;;;;;;;;;;;;
 
 ; function definition
 ; {}
@@ -403,41 +414,139 @@ document.body.appendChild (script);
 
 (april "15 {⍺<⍵} 10 20 30")
 
+(april-f "{3 3 ⍴ ⍵} ⍳10")
 
 
-;;;;;;;;;;;;;;;;;;;;
+
+; ⎕
+; look
+
+(april "⎕← 8 7 6" )
+
+; ⋄
+; end of expression
+
+(april "1 ⋄ 2" )
+
+(april "⎕←1 ⋄ 2" )
+
+(april "⎕←1 ⋄ 2 ⋄ 99" )
+
+; [ ]
+; indexing
+
+(april "m←3 3 ⍴ ⍳ 9")
+
+(april "m[1;]")
+
+(april "(4 4 ⍴ ⍳ 16) [1;]")
+
+
+; +/
+; plus reduce
+; plus "plop"
+
+(april "+/1 3 5 7")
+
+(april "sam ← 10 20 30")
+
+(april "+/sam")
+
+; ×/
+; multiply reduce
+; muitiply "plop"
+
+(april "×/1 3 5 7")
+
+(april "sam ← 10 20 30")
+
+(april "×/sam")
+
+; ⌈
+; (monadic) round up
+; (dyadic) maximum
+
+
+(april "⌈4.2")
+
+(april "9⌈8")
+
+; ⌊
+
+(april "⌊4.2")
+
+(april "2.5⌊4.2")
+
+; |
+; remainder
+
+(april "5|10")
+; 10 divided by 5 is 2 and the remainder is 0
+
+(april "5|9")
+; 9 divided by 5 is 1 and the remainder is 4
+
+
+
+
+; some rotations, flips, etc.
+
+(write-array (april "⊖img"))
+
+(write-array (april "⌽img"))
+
+(write-animated-gif (april "img (⌽img) (⊖img)"))
+
+(write-animated-gif (april "img (100⌽img)"))
+
+(write-animated-gif (april "img (100⌽img)"))
+
+(write-array (april "img,⌽img"))
+
+(write-array (april "{⍵,[1]⊖⍵}img,⌽img"))
+
+(write-array (april "{⍵,[1]⊖⍵} (¯230⌽img),230⌽⌽img"))
+
+
+
 
 ; convolution kernels
 ; using the stencil function:  ⌺
 
-(april "⎕←m←4 4 ⍴ ⍳25")
+(april "⎕ ← m ← 4 4 ⍴ ⍳ 25")
 
 (april-f "({⍵}⌺ 3 3) m")
 
 (april-f "({+/,⍵}⌺ 3 3) m") ; adding up all cells in each matrix
 
+(write-array (april "img"))
+
+; adding up all cells in each matrix 
+; then reduce to 255 if greater (clamping)
+(write-array (april-f "255⌊({+/,⍵}⌺ 3 3) img"))
+
+; sharpen kernel
 (april "⎕←kernel←3 3 ⍴ 0 ¯1 0 ¯1 5 ¯1 0 ¯1 0")
 
-(write-array (april-f "255⌊({+/,⍵}⌺ 3 3) img")) ; adding up all cells in each matrix
-
-(april-f "result←({+/+/kernel×⍵}⌺ 3 3) img ⋄ 0"); sharpen kernel
+(april-f "result←({+/+/kernel×⍵}⌺ 3 3) img ⋄ 0")
 
 (write-array (april "0⌈255⌊result"))
 
-(april-f "result1←({+/+/kernel×⍵}⌺ 3 3) (225⌊result) ⋄ 0"); sharpen kernel
+; let's sharpen a few times then animate
 
-(april-f "result2←({+/+/kernel×⍵}⌺ 3 3) (225⌊result1) ⋄ 0"); sharpen kernel
+(april-f "result1←({+/+/kernel×⍵}⌺ 3 3) (225⌊result) ⋄ 0")
 
-(april-f "result3←({+/+/kernel×⍵}⌺ 3 3) (225⌊result2) ⋄ 0"); sharpen kernel
+(april-f "result2←({+/+/kernel×⍵}⌺ 3 3) (225⌊result1) ⋄ 0")
 
+(april-f "result3←({+/+/kernel×⍵}⌺ 3 3) (225⌊result2) ⋄ 0")
+
+; first, look at the final result 
 (write-array (april "0⌈255⌊result3"))
 
-; (write-array (april "small←100 100 ↑ img"))
-; (write-array (april "small"))
+(write-animated-gif (april "img (0⌈255⌊result) (0⌈255⌊result1) (0⌈255⌊result2)")) 
 
-(write-animated-gif (april "img (0⌈255⌊result) (0⌈255⌊result1) (0⌈255⌊result2)")) ; clamp
 
-;;;;;; line detection
+; line detection
 
 (write-array (april "img"))
 
@@ -447,7 +556,7 @@ document.body.appendChild (script);
 
 (write-array (april "done"))
 
-;;;;;;;;;;;;;;;;;;;;
+; guassian blur in a function
 
 (april "gaussBlur←{kernel←3 3 ⍴ 1 2 1 2 4 2 1 2 1
                    ({255⌊0⌈⌊(+/,kernel × ⍵)÷16}⌺ 3 3) ⍵
@@ -455,17 +564,23 @@ document.body.appendChild (script);
 
 (april-f "gaussBlur 3 3 ⍴ ⍳9")
 
-;;;;
+(write-array (april-f "gaussBlur img"))
+
+; apply it twice
+
+;;;;;;;;;
 
 (read-png "images/twitter_photo1_sm.png")
 
 ; how many pixel values are greater than 50?
-(april "+/,img>50")
 
 ; how many pixel are there? 
 
 ; what percentage of pixel values are greater than 50? 
 (april "⌊100×(+/,img>50)÷×/⍴img")
+
+; what color occurs most often?
+(april "{⍺ (≢⍵)}⌸ ,img")
 
 (april "⎕←kernelA←3 3 ⍴ ¯1 2 ¯1 ")
 
@@ -515,205 +630,21 @@ document.body.appendChild (script);
 
 (write-array (april "(⊢×(200∘<)) (255⌊0⌈r)"))
 
-;   ×⍨⍤50∘<  ⍵
-
-
 (april "{+/,(3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9) × ⍵}⌺ 3 3 ⊢ img")
 
 (april-f "3 3 ⍴ ¯1 ¯1 ¯1 ¯1 9 ")
 
-;;;;
-;
-(april-f "kernelB←⍉kernelA")
-(april-f "kernelC←¯1 0 1⌽kernelA")
-(april-f "kernelD←⌽¯1 0 1⌽kernelA")
-;
-(april "img←?3 3 ⍴ 255")
-(april-f "({+/+/⍵}⌺3 3) img")
-(april-f "kernelA kernelB kernelC kernelD × ⊂img")
-(april-f "255⌊|+/¨+/¨kernelA kernelB kernelC kernelD × ⊂img")
-; (april-f "⍴({255⌊|+/¨+/¨kernelA kernelB kernelC kernelD × ⊂⍵}⌺3 3) img")
-(april-f "({+/+/¨kernelA kernelB kernelC kernelD × ⊂⍵}⌺3 3) img")
-(april-f "({kernelA kernelB kernelC kernelD × ⊂⍵}⌺3 3) img")
-(april-f "({kernelA kernelB × ⊂⍵}⌺3 3) img")
-(april-f "({kernelA kernelB (⊣×⊂⍤⊢) ⍵}⌺3 3) img")
-;              ⍺×⊂⍵
-; ⍺ ( gh)⍵→   g(⍺h⍵)  ⍝ dyadic  atop)
-; ⍺ (fgh)⍵→  (⍺f⍵) g(⍺h⍵)  ⍝ dyadic  fgh fork)
-(april "2 3 (⊣×⊂⍤⊢) 4 5")
-(april "2 3 ×∘⊂ 4 5")
-(april "2 3 (⊣(+/×)⊂⍤⊢) 4 5")
-(april "2 3 ⊂⍤⊢ 4 5")
-(april "2 3 (⊂⊢) 4 5")
-(april-f "({+/+/kernelA × ⍵}⌺3 3) img")
-(format t "~@r~%" 123)
-(format t "~r~%" 123)
-(april-f "m←2 3 3 ⍴ ⍳ 18")
-(april-f "(1⌷m) (2⌷m)")
-(april "count←⊃⍴m")
-(april "≢ 8 3 3 ⍴ 0")
-(april-f "(⍳≢) ∘.⌷ ⊂m ")
-;      (∘.⌷∘⊂)
-(april-f "(⍳∘≢(∘.⌷)⊂) m")
-(april-f "(⍳∘≢∘.⌷⊂) m")
 
-(april-f "⊃1 1 ↑'(÷' '(-' ∘., 1 2 3 ∘., ')'")
-; (fgh)⍵→   ( f⍵) g( h⍵)  ⍝ monadic fgh fork)
-(april "(-,[0.5]÷) 1 2 3")
-(april "'(÷',' 1)'")
-(april "'(÷ 1) (÷ 2)'")
-(april "img←?2 2 ⍴ 255 ")
-(time (april "result←({+/+/⍵×kernel}⌺3 3) img"))
-(write-array (april "255⌊|result"))
-(april "")
-
-(write-array (april "255×img<155"))
-;;;;;;;;;;;;;;
-
-
-
-
-; ⎕
-; look
-
-(april "⎕← 8 7 6" )
-
-; ⋄
-; end of expression
-
-(april "1 ⋄ 2" )
-
-(april "⎕←1 ⋄ 2" )
-
-(april "⎕←1 ⋄ 2 ⋄ 99" )
-
-; [ ]
-; indexing
-
-(april "sam[1]")
-
-(april "⎕←m ⋄ 0")
-
-(april "m[1;]")
-
-
-; +/
-; plus reduce
-; plus "plop"
-
-(april "+/1 3 5 7")
-
-(april "+/sam")
-
-; ⌈
-; (monadic) round up
-; (dyadic) maximum
-
-
-(april "⌈4.2")
-
-(april "9⌈8")
-
-; ⌊
-
-(april "⌊4.2")
-
-; |
-; remainder
-
-(april "5|10")
-; 10 divided by 5 is 2 and the remainder is 0
-
-(april "5|9")
-; 9 divided by 5 is 1 and the remainder is 4
-
-
-
-; {}
-
-; ⊂
-
-; ⊃
-
-; ∘.
-
-; *
-
-
-;;;;;;;;;;;;;;;
-; some rotations, flips, etc.
-
-(write-array (april "⊖img"))
-
-(write-array (april "⌽img"))
-
-(write-animated-gif (april "img (⌽img) (⊖img)"))
-
-(write-animated-gif (april "img (100⌽img)"))
-
-(write-animated-gif (april "img (100⌽img)"))
-
-
-(write-array (april "img,⌽img"))
-
-(write-array (april "{⍵,[1]⊖⍵}img,⌽img"))
-
-(write-array (april "{⍵,[1]⊖⍵} (¯230⌽img),230⌽⌽img"))
-;;;;;;;;;
-
-
-
-;;;;;;;;;;;;;;;
-
-
-
-
-; if you want an information overload run this cell.
-; it will tell you lots of information about the file "some.jpg"
-(uiop:run-program "identify -verbose images/sia.png" :output t)
-
-
-(write-array (april "⎕←100 100 ⍴ 100?200"))
-
-(april "⎕←100 100 ⍴ 100?200")
-; https://www.keyence.com/ss/products/auto_id/barcode_lecture/basic/mechanism/
-; make a barcode?
-
-
-
-
-;;;;;;;;;;;
-(april-f "v←200×0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 1 1 0 0⋄ m←5 6 ⍴ v ")
-(april-f "m")
-(write-array (april "m"))
-(write-array (april-f "⌊({(+/+/÷×/∘⍴)⍵}⌺ 3 3) img"))
-(april "(+/+/÷×/) 3 3 ⍴ ⍳9")
-(april "(×/∘⍴) 3 3 ⍴ ⍳9")
-(april "⌊3 3 ⍴ 4÷3")
-;;;
-(april "m")
-;;;;;;;;;;;
 
 ; ⌸ key
-(april-f "res←{⍺ (≢⍵)}⌸ ,img")
-(april-f "⎕←res[⍒res[;2];]⋄0")
-(write-array (april "sr←img[⍋img[1;]]"))
-(write-array (april "img[⍋img[1;]] ,[1] ¯299↑img"))
-(write-array (april "↑⍋¨↓img[⍳10;] ,[1] ¯290↑img")) ; what is this?
-(write-array (april "↑⍋¨↓img[⍳10;]"))
-(write-array (april "img[⍳2;]"))
-(april-f "target←2 2 ⍴ ⍳4")
-(april "rearr←2 2 ⍴ 2 1 2 1")
-(april-f "target[rearr]")
 
-(write-array (april "↑⍋¨↓img[⍳2;]"))
-(april "img[1 2;]")
-(april "⍴img")
-(april-f "0 11 22 ,[1] 3 3 ⍴ ⍳ 9")
+(april "⎕←m←5 5 ⍴ ⍳20")
+
+(april-f "{⍺ (≢⍵)}⌸ ,m")
 
 (progn
-  ; (april "m←img")
-  (april "m←smile")
+  (april "m←img")
+  ; (april "m←smile")
   ; (april "m←⌊(+/img)÷¯1↑⍴img")
   (april "res←{⍺,≢⍵} ⌸ ,m")
   (april-f "sorted←res[⍋⌽res;]")
@@ -721,139 +652,9 @@ document.body.appendChild (script);
   (april "values←sorted[⍳1⊃⍴sorted;1]")
   (april "counts←sorted[⍳1⊃⍴sorted;2]")
   0)
+
 (write-array (april "(⍴m) ⍴ counts/values"))
-;;;;;;;;;;;;;;;;;
 
-; what color occurs most often?
-
-
-
-
-; TODO note that the wet bandits, after sobel, seem to have 
-; extra information. jpeg artifacts?
-
-; y (april "littlem←(250⊖200⌽m)[⍳10;⍳10]"))
-(april "{+/+/kernel×⍵}⌺3 3⊢m")
-(april "{+/+/kernel×⍵}⌺3 3⊢m")
-(april "⍴m")
-(april "{+/+/kernel×⍵}⌺3 3⊢10 10 ⍴ ⍳100")
-(defmacro bob (a)
-  `(loop :for i :from 0 :to 1000
-         :collect (progn 
-                    (sleep 0.01)
-                    (list ,a))))
-(bob 88)
-(flamegraph:save-flame-graph ("/mnt/some.flame") 
-  (april "{+/+/kernel×⍵}⌺3 3⊢m"))
-(april (:with (:compile-only)) "filteredx←{+/+/kernel×⍵}⌺3 3⊢m")
-(april  "filteredx←{+/+/kernel×⍵}⌺3 3⊢m")
-(april "⍴ filteredx")
-(flamegraph:save-flame-graph ("/mnt/some.flame") 
-  (blah))
-;;;;;;;;;;;
-; CL-USER> (defun foo ()
-;            (sleep 0.01))
-; FOO
-; CL-USER> (defun bar ()
-;            (sleep 0.05))
-; BAR
-; CL-USER> (defun blah ()
-;            (loop repeat 1000
-;                  do (foo)
-;                     (bar)))
-;;;;;;;;;;;
-(april "filteredy←{+/+/g×⍵}⌺3 3⊢m")
-(write-array (april "255⌊0⌈⌈filteredy÷kernelsum"))
-(april "255⌊0⌈⌈filteredy÷kernelsum")
-(write-array (april "255⌊0⌈⌈filteredx÷kernelsum"))
-(april-f "kernel× 3 3 ⍴ ⍳9")
-(april "⊢⌺3 3⊢littlem")
-(april "+/,{+/+/⍵}⌺3 3⊢304 540 ⍴ ⍳20")
-(april-f "⊢⌺3 3⊢6 5 ⍴ ⍳5")
-(write-array (april "m"))
-(ql:system-apropos "monitor")
-(ql:quickload "cl-monitors")
-(ql:quickload "chronicity")
-(ql:system-apropos "oni")
-(cl-monitors:monitor "ff" )
-(ql:quickload :flamegraph)
-
-  (april-f "Gy←(⊂g)×sub_mats")      ; gradient in y
-
-  (april-f "filteredx ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gx")
-(april "filteredx[1 2 3;]")
-
-  (april-f "filteredy ←(¯2+(⍴m)[1]) (¯2+(⍴m)[2]) ⍴ +/¨+/¨Gy")
-
-  ; now only keep if above a threshhold
-  ; (april "filtered←filtered×filtered<150")
-  ;
-
-  ; sobel
-  (april-f "final←((filteredx*2)+filteredy*2)*0.5")
-
-(write-array
-    (april "255⌊0⌈⌈final÷kernelsum"))
-
-(april "final×final<50")
-(write-array
-    (april "255⌊0⌈⌈final×final>200÷kernelsum"))
-
-
-(april "f←{⎕←⍵ ⋄ ⍵} ⋄ f\\1 2 3")
-(april "f←{⍺,⍵} ⋄ f/1 2 3")
-
-(write-array (april-c "{5 5 3 ↑⍵}" (opticl:read-png-file "./images/sia.png")))
-(april-c "{⍴⍵}" (opticl:read-png-file "./images/sia.png"))
-(april "(+/÷(¯1↑⍴)) 5 5 3 ⍴ ⍳75")
-(april "5 5 3 ⍴ ⍳75")
-(+ 1 2 (print (+ 3 3)))
-(april "2 2⌷5 5 ⍴⍳50")
-; +/⍵ ÷ ⍴⍵ 
-(april (test))
-(uiop:directory-files "." )
-(let ((pid (sb-posix:getpid)))
-  (uiop:run-program (format nil "cat /proc/~A/cmdline" pid)
-                    :output t))
-
-(remove-if #'evenp (alexandria:iota 50))
-(delete-file )
-
-(type-of (april::array-to-list *sia*))
-(type-of *sia*)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(april "⍴(⍳2)∘.× ⍬ ∘.× (⍳4)")
-(april "⍴+⌿(⍳2)∘.× ⍬ ∘.× (⍳4)")
-(april "+⌿+⌿(⍳2)∘.× ⍬ ∘.× (⍳4)")
-(april "a←(⍳2)∘.× ⍬ ∘.× (⍳4)")
-(setf aa (april "a"))
-(april-c "{⍴⍵}" aa)
-(type-of aa)
-(april "⍬≡1↓'a'")
-(april "⍬≡''")
-
-(april "⍬∘., 1 2 3")
-
-(type-of (april "⍬ ∘.× (⍳4)"))
-(type-of (april "(⍳2)∘.× ⍬ ∘.× (⍳4)"))
-(type-of (april "+⌿(⍳2)∘.× ⍬ ∘.× (⍳4)"))
-(april-f "⍳2 3")
-
-(april "⍬≡1↓'apple'")
-(april "⍬≡1↓1↑4↓1↓'apple'")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(uiop:run-program "ls -la /home/containeruser/quicklisp" :output t )
-(load "/home/containeruser/quicklisp/local-projects/april/demos/ncurses/loader.lisp")
-(load "/home/containeruser/quicklisp/local-projects/april/demos/ncurses/loader.lisp")
-(ql:quickload "croatoan")
-
-(april-f "+/3 2 ⍴ 1 2 3 (⊂4 5)")
-
-(april "2 ,⍥÷ 5")
-(april "5⍨ 2 6")
-(april "7 (5⍨) 2 6")
-(april "(×/÷⊢) 1 2 3 4 5")
 
 
 
