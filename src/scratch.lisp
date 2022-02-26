@@ -117,3 +117,5 @@
 ; if you want an information overload run this cell.
 ; it will tell you lots of information about the file "some.jpg"
 (uiop:run-program "identify -verbose images/sia.png" :output t)
+
+(april "10 ÷ 2 + 3")

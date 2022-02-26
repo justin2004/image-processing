@@ -96,4 +96,4 @@
                         color-table))
     (setf (skippy:loopingp data-stream) t)
     (skippy:output-data-stream data-stream #p"example3.gif")
-    (funcall *look-at-image* #p"example3.gif")))
+    (funcall *look-at-image* "example3.gif")))
