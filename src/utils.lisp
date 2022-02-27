@@ -70,9 +70,9 @@
 
 
 
-(defun write-animated-gif (vec)
+(defun write-animated-gif (vec &optional (delay 100))
   "vec: a vector of mats"
-  (let* ((delay 100)
+  (let* ( ;(delay 100)
          (first-mat-dims (array-dimensions (elt vec 0))) ; assumes all mats have the same dims as the first
          (height (first first-mat-dims))
          (width (second first-mat-dims))
