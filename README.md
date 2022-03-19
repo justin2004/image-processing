@@ -1,6 +1,6 @@
 ## Image Processing with APL
 
-[ex](example3.gif)
+![ex](example3.gif)
 
 
 [HERO Code Camp '22 Recap]()
